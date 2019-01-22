@@ -10,6 +10,6 @@ public class Home extends WebPage
 {
     public Home()
     {
-        add(new Label("message", "Wicket sucks :)"));
+        add(new Label("message", "Wicket message :)"));
     }
 }
