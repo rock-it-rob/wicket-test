@@ -9,23 +9,24 @@ import org.apache.wicket.markup.html.link.Link;
  */
 public class Home extends WebPage
 {
-    private static final String DETAILS_ID = "details";
+	private static final long serialVersionUID = 1L;
+	private static final String DETAILS_ID = "details";
 
-    public Home()
-    {
-        // Add text labels.
-        add(new Label("message", "Wicket message :)"));
+	public Home()
+	{
+		// Add text labels.
+		add(new Label("message", "Wicket message :)"));
 
-        // Add links.
-        add(
-            new Link<Void>(DETAILS_ID)
-            {
-                @Override
-                public void onClick()
-                {
-                    setResponsePage(Details.class);
-                }
-            }
-        );
-    }
+		// Add links.
+		add(new Link<Void>(DETAILS_ID)
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick()
+			{
+				setResponsePage(Details.class);
+			}
+		});
+	}
 }

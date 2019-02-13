@@ -9,11 +9,9 @@ import org.apache.wicket.protocol.http.WebApplication;
  */
 public class WicketApplication extends WebApplication
 {
-    private static final String TEMPLATE_PATH = "template";
-
-    @Override
-    public Class<? extends Page> getHomePage()
-    {
-        return Home.class;
-    }
+	@Override
+	public Class<? extends Page> getHomePage()
+	{
+		return Home.class;
+	}
 }
