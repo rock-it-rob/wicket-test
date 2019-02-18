@@ -10,7 +10,9 @@ import java.util.Date;
  */
 public class Details extends WebPage
 {
-    private static final String VERSION_ID = "version";
+	private static final long serialVersionUID = 1L;
+	
+	private static final String VERSION_ID = "version";
     private static final String GEN_DATE_ID = "generatedDate";
 
     private final String version;

@@ -11,6 +11,7 @@ public class Home extends WebPage
 {
 	private static final long serialVersionUID = 1L;
 	private static final String DETAILS_ID = "details";
+	private static final String FORM_ID = "form";
 
 	public Home()
 	{
@@ -26,6 +27,14 @@ public class Home extends WebPage
 			public void onClick()
 			{
 				setResponsePage(Details.class);
+			}
+		});
+		add(new Link<Void>(FORM_ID)
+		{
+			@Override
+			public void onClick()
+			{
+				setResponsePage(FormPage.class);
 			}
 		});
 	}

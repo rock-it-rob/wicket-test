@@ -1,0 +1,30 @@
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+<head>
+<title>Form Page</title>
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/form.css" />
+</head>
+
+<body>
+
+	<h1>Test Form</h1>
+
+	<form wicket:id="form">
+		<ul>
+			<li><input type="text" wicket:id="textbox" /></li>
+			<li><span wicket:id="updateText"></span></li>
+			<li><input type="submit" value="update" /></li>
+		</ul>
+	</form>
+
+	<h1>TODO</h1>
+	<p>Figure out wicket form validation and see if it's possible to
+		validate from input without using 2 data models.</p>
+
+</body>
+
+</html>
