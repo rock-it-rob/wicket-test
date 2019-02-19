@@ -1,4 +1,4 @@
-package com.rob.wickettest.selenium;
+package com.rob.wickettest.test.selenium;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,6 +9,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import static org.openqa.selenium.By.*;
 import static org.junit.Assert.*;
 
+@Category(SeleniumCategory.class)
 public class FormPageTest
 {
 	private static final Logger log = LoggerFactory.getLogger(FormPageTest.class);

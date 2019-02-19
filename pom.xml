@@ -18,6 +18,7 @@
 		<selenium.version>3.141.5</selenium.version>
 		<app.context>/${project.name}-${project.version}</app.context>
 		<app.port>8080</app.port>
+		<junit.category>com.rob.wickettest.test.unit.UnitTestCategory</junit.category>
 	</properties>
 
 	<dependencies>
@@ -91,6 +92,7 @@
 					<systemPropertyVariables>
 						<app.url>http://localhost:${app.port}/${app.context}</app.url>
 					</systemPropertyVariables>
+					<groups>${junit.category}</groups>
 				</configuration>
 			</plugin>
 		</plugins>
