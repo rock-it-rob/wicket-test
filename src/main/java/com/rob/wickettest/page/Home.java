@@ -31,6 +31,8 @@ public class Home extends WebPage
 		});
 		add(new Link<Void>(FORM_ID)
 		{
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onClick()
 			{
