@@ -55,6 +55,7 @@ public class FormPageTest
 	{
 		webDriver = new RemoteWebDriver(chromeDriverService.getUrl(), new ChromeOptions());
 		webDriver.manage().timeouts().implicitlyWait(TIMEOUT, TIMEOUT_UNIT);
+		webDriver.get(testUrl);
 	}
 
 	@After
@@ -70,10 +71,7 @@ public class FormPageTest
 	public void testSubmitExists()
 	{
 		WebElement submitButton = null;
-		log.debug("Navigating to " + testUrl);
-		webDriver.get(testUrl);
-		final WebElement formLink = webDriver.findElement(id(FORM_LINK_ID));
-		formLink.click();
+		navigateToFormPage();
 		for (WebElement e : webDriver.findElements(tagName("input")))
 		{
 			if (e.getAttribute("type").equalsIgnoreCase("submit"))
@@ -83,5 +81,20 @@ public class FormPageTest
 			}
 		}
 		assertNotNull(submitButton);
+	}
+
+	@Test
+	public void testSubmitExistsByXpath() throws InterruptedException
+	{
+		navigateToFormPage();
+		final WebElement submitButton = webDriver
+				.findElement(xpath("//label[@for='text-field']/../..//input[@type='submit']"));
+		assertNotNull(submitButton);
+	}
+
+	private void navigateToFormPage()
+	{
+		final WebElement formLink = webDriver.findElement(id(FORM_LINK_ID));
+		formLink.click();
 	}
 }
