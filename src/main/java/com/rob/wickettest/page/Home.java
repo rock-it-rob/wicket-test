@@ -1,43 +1,43 @@
 package com.rob.wickettest.page;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 
 /**
  * @author Rob Benton
  */
-public class Home extends WebPage
+public class Home extends AbstractPage
 {
-	private static final long serialVersionUID = 1L;
-	private static final String DETAILS_ID = "details";
-	private static final String FORM_ID = "form";
+    private static final long serialVersionUID = 1L;
 
-	public Home()
-	{
-		// Add text labels.
-		add(new Label("message", "Wicket message :)"));
+    private static final String DETAILS_ID = "details";
+    private static final String FORM_ID = "form";
 
-		// Add links.
-		add(new Link<Void>(DETAILS_ID)
-		{
-			private static final long serialVersionUID = 1L;
+    public Home()
+    {
+        // Add text labels.
+        add(new Label("message", "Wicket message :)"));
 
-			@Override
-			public void onClick()
-			{
-				setResponsePage(Details.class);
-			}
-		});
-		add(new Link<Void>(FORM_ID)
-		{
-			private static final long serialVersionUID = 1L;
+        // Add links.
+        add(new Link<Void>(DETAILS_ID)
+        {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick()
-			{
-				setResponsePage(FormPage.class);
-			}
-		});
-	}
+            @Override
+            public void onClick()
+            {
+                setResponsePage(Details.class);
+            }
+        });
+        add(new Link<Void>(FORM_ID)
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onClick()
+            {
+                setResponsePage(FormPage.class);
+            }
+        });
+    }
 }
