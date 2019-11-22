@@ -6,14 +6,14 @@ import org.apache.wicket.markup.html.link.Link;
 /**
  * @author Rob Benton
  */
-public class Home extends AbstractPage
+public class HomePage extends AbstractPage
 {
     private static final long serialVersionUID = 1L;
 
     private static final String DETAILS_ID = "details";
     private static final String FORM_ID = "form";
 
-    public Home()
+    public HomePage()
     {
         // Add text labels.
         add(new Label("message", "Wicket message :)"));
@@ -26,7 +26,7 @@ public class Home extends AbstractPage
             @Override
             public void onClick()
             {
-                setResponsePage(Details.class);
+                setResponsePage(DetailsPage.class);
             }
         });
         add(new Link<Void>(FORM_ID)

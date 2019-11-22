@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @author Rob Benton
  */
-public class Details extends AbstractPage
+public class DetailsPage extends AbstractPage
 {
     private static final long serialVersionUID = 1L;
 
@@ -16,7 +16,7 @@ public class Details extends AbstractPage
 
     private final String version;
 
-    public Details()
+    public DetailsPage()
     {
         version = getClass().getPackage().getImplementationVersion();
         add(new Label(VERSION_ID, version));
