@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+<wicket:extend>
+    <form wicket:id="validateForm">
+        <ul>
+            <li>
+                <p>Enter the text "abc" to be valid.</p>
+            </li>
+            <li>
+                <input type="text" wicket:id="textInput"/>
+            </li>
+            <li>
+                <div wicket:id="textInputFeedback"/>
+            </li>
+            <li>
+                <button type="submit">Enter</button>
+            </li>
+        </ul>
+    </form>
+</wicket:extend>
+
+</html>

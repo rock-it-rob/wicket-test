@@ -10,8 +10,9 @@ public class HomePage extends AbstractPage
 {
     private static final long serialVersionUID = 1L;
 
-    private static final String DETAILS_ID = "details";
-    private static final String FORM_ID = "form";
+    private static final String DETAILS_ID = "detailsPageLink";
+    private static final String FORM_ID = "formPageLink";
+    private static final String VALIDATION_ID = "validationPageLink";
 
     public HomePage()
     {
@@ -21,8 +22,6 @@ public class HomePage extends AbstractPage
         // Add links.
         add(new Link<Void>(DETAILS_ID)
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void onClick()
             {
@@ -31,12 +30,18 @@ public class HomePage extends AbstractPage
         });
         add(new Link<Void>(FORM_ID)
         {
-            private static final long serialVersionUID = 1L;
-
             @Override
             public void onClick()
             {
                 setResponsePage(FormPage.class);
+            }
+        });
+        add(new Link<Void>(VALIDATION_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(ValidationPage.class);
             }
         });
     }
