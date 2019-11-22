@@ -2,7 +2,6 @@ package com.rob.wickettest.page;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
@@ -43,8 +42,5 @@ public class ValidationPage extends AbstractPage
             }
         });
         validateForm.add(textInput);
-
-        final ComponentFeedbackPanel textInputFeedback = new ComponentFeedbackPanel("textInputFeedback", textInput);
-        validateForm.add(textInputFeedback);
     }
 }
