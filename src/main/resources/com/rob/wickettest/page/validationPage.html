@@ -4,19 +4,28 @@
       xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
 
 <wicket:extend>
-    <form wicket:id="validateForm">
+
+    <h1>Component Validation</h1>
+    <form wicket:id="componentValidateForm">
         <ul>
             <li>
                 <p>Enter the text "abc" to be valid.</p>
             </li>
             <li>
-                <input type="text" wicket:id="textInput"/>
+                <input type="text" wicket:id="componentTextInput"/>
             </li>
             <li>
-                <button type="submit">Enter</button>
+                <p>Enter a valid email address.</p>
+            </li>
+            <li>
+                <input type="text" wicket:id="emailInput"/>
+            </li>
+            <li>
+                <button wicket:id="componentSubmitButton" type="submit">Enter</button>
             </li>
         </ul>
     </form>
+
 </wicket:extend>
 
 </html>

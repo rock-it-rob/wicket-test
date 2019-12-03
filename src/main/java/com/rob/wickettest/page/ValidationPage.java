@@ -1,18 +1,16 @@
 package com.rob.wickettest.page;
 
 import org.apache.wicket.bean.validation.PropertyValidator;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidator;
-import org.apache.wicket.validation.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class ValidationPage extends AbstractPage
@@ -24,20 +22,46 @@ public class ValidationPage extends AbstractPage
     private static final String ACCEPTED_VALUE = "abc";
     private static final String MESSAGE = "Accepted value is 'abc'";
 
+    @NotNull
     @Pattern(regexp = ACCEPTED_VALUE, message = MESSAGE)
-    private String value;
+    private String componentTextValue;
+
+    @NotNull
+    @Email(message = "A valid email address is required")
+    private String emailInputValue;
 
     @Override
     protected void onInitialize()
     {
         super.onInitialize();
 
-        final Form<Object> validateForm = new Form<>("validateForm");
-        add(validateForm);
+        final Form<Object> componentValidateForm = new Form<>("componentValidateForm");
+        add(componentValidateForm);
 
-        final TextField<String> textInput = new TextField<>("textInput", new PropertyModel<>(this, "value"));
-        textInput.setLabel(new Model<>("textInput"));
-        textInput.add(new PropertyValidator<>());
-        validateForm.add(textInput);
+        final TextField<String> componentTextInput = new TextField<>("componentTextInput", new PropertyModel<>(this, "componentTextValue"));
+        componentTextInput.setLabel(new Model<>("componentTextInput"));
+        componentTextInput.add(new PropertyValidator<>());
+        componentValidateForm.add(componentTextInput);
+
+        final TextField<String> emailInput = new TextField<>("emailInput", new PropertyModel<>(this, "emailInputValue"));
+        emailInput.setLabel(new Model<>("Email Input"));
+        emailInput.add(new PropertyValidator<>());
+        componentValidateForm.add(emailInput);
+
+        final Button componentSubmitButton = new Button("componentSubmitButton")
+        {
+            @Override
+            public void onSubmit()
+            {
+                success("All components validated");
+            }
+
+            @Override
+            public void onError()
+            {
+                log.error("Error submitting component form.");
+            }
+        };
+        componentValidateForm.add(componentSubmitButton);
     }
 }

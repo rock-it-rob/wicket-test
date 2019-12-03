@@ -12,7 +12,7 @@ public abstract class AbstractPage extends WebPage
     {
         super.onInitialize();
 
-        final ToastrFeedbackPanel toastrFeedbackPanel = new ToastrFeedbackPanel("feedbackPanel");
-        add(toastrFeedbackPanel);
+        final ToastrFeedbackPanel feedbackPanel = new ToastrFeedbackPanel("feedbackPanel");
+        add(feedbackPanel);
     }
 }

@@ -8,35 +8,16 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
+    <script src="js/toastr.min.js"></script>
+    <link rel="stylesheet" href="css/toastr.min.css"/>
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="css/form.css"/>
+    <link rel="stylesheet" href="css/feedback.css"/>
 </head>
 
 <body>
     <wicket:child/>
-    <div wicket:id="feedbackPanel"/>
+    <div class="feedback" wicket:id="feedbackPanel"/>
 </body>
-
-<script src="js/toastr.min.js"></script>
-
-<script>
-		toastr.options = {
-				  "closeButton": true,
-				  "debug": false,
-				  "newestOnTop": false,
-				  "progressBar": false,
-				  "positionClass": "toast-top-full-width",
-				  "preventDuplicates": false,
-				  "onclick": null,
-				  "showDuration": "4000",
-				  "hideDuration": "1000",
-				  "timeOut": "5000",
-				  "extendedTimeOut": "1000",
-				  "showEasing": "swing",
-				  "hideEasing": "linear",
-				  "showMethod": "fadeIn",
-				  "hideMethod": "fadeOut",
-				}
-  	</script>
 
 </html>
