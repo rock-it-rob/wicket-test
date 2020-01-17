@@ -13,6 +13,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+//
+// TODO: Test out validating one component from another FormComponentUpdating behavior.
+// TODO: Test out validating multiple components with a form validator inside a form with an AjaxFormSubmit behavior
+// where the submit is tied to a blur/change event. Will that fire for any change inside the form?
+//
 public class ValidationPage extends AbstractPage
 {
     private static final long serialVersionUID = 1L;
