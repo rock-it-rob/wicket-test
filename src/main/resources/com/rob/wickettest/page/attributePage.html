@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+<wicket:extend>
+
+    <h1>Attribute Test</h1>
+
+    <p>
+        Enter a new value for the attribute "test-attribute":
+    </p>
+
+    <form wicket:id="attributeForm">
+        <input type="text" wicket:id="attributes"/>
+        <input type="hidden" id="hidden-element" wicket:id="hiddenElement"/>
+        <button type="submit">Change</button>
+    </form>
+
+    <div>
+        <button onclick="listAttributes('hidden-element', 'attribute-list')">List attributes</button>
+        <p>Attributes List</p>
+        <div id="attribute-list"></div>
+    </div>
+
+</wicket:extend>
+
+</html>
