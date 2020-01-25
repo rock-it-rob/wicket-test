@@ -1,6 +1,6 @@
 package com.rob.wickettest.page;
 
-import com.rob.wickettest.component.AbstractWidget;
+import com.rob.wickettest.component.widget.AbstractWidget;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import java.util.ArrayList;
@@ -12,27 +12,27 @@ import java.util.ArrayList;
  */
 public class SortablePage extends AbstractPage
 {
-    private static final String WIDGET_LIST_ID = "widgetList";
-    private static final String WIDGET_PALETTE_ID = "widgetPalette";
+    private static final String WIDGET_PALETTE_ID = "widgetPaletteList";
+    private static final String WIDGET_CANVAS_ID = "widgetCanvas";
 
-    private final ArrayList<? extends AbstractWidget> widgetList = new ArrayList<>();
-    private final ArrayList<? extends AbstractWidget> paletteList = new ArrayList<>();
+    private final ArrayList<? extends AbstractWidget> paletteWidgets = new ArrayList<>();
+    private final ArrayList<? extends AbstractWidget> widgets = new ArrayList<>();
 
     @Override
     protected void onInitialize()
     {
         super.onInitialize();
 
-        final RepeatingView widgetListView = new RepeatingView(WIDGET_LIST_ID)
-        {
-            // todo: add widgets
-        };
-        add(widgetListView);
-
         final RepeatingView paletteListView = new RepeatingView(WIDGET_PALETTE_ID)
         {
             // todo: add widgets
         };
         add(paletteListView);
+
+        final RepeatingView widgetListView = new RepeatingView(WIDGET_CANVAS_ID)
+        {
+            // todo: add widgets
+        };
+        add(widgetListView);
     }
 }

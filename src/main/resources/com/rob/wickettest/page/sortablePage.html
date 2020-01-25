@@ -7,8 +7,15 @@
 
     <h1>Sortable Grid</h1>
 
-    <div class="panel left">
-        <h2>Available Items</h2>
+    <h2>Palette</h2>
+    <div class="widget-palette">
+        <div class="widget" wicket:id="widgetPaletteList"></div>
+    </div>
+
+    <h2>Widgets</h2>
+    <div class="widget-container">
+        <div class="widget-canvas" wicket:id="widgetCanvas"></div>
+    </div>
         <!--
         <div id="available-items" class="widget-list">
             <div class="widget">
@@ -27,18 +34,6 @@
                 <a class="remove" href="#" onclick="removeFromPalette(this)">x</a>
             </div>
             -->
-        <div class="widget-list" wicket:id="widgetList"></div>
-        <button onclick="sortWidgets()">Sort</button>
-    </div>
-
-    <div class="panel right">
-        <h2>Items</h2>
-        <!--
-        <div id="chosen-items" class="widget-list widget-palette">
-        </div>
-        -->
-        <div wicket:id="widgetPalette" class="widget-palette"></div>
-    </div>
 
     <script src="js/sort.js"></script>
 

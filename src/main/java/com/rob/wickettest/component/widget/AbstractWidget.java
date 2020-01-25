@@ -1,4 +1,4 @@
-package com.rob.wickettest.component;
+package com.rob.wickettest.component.widget;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
