@@ -1,0 +1,47 @@
+<!doctype html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+<wicket:extend>
+
+    <h1>Sortable Grid</h1>
+
+    <div class="panel left">
+        <h2>Available Items</h2>
+        <!--
+        <div id="available-items" class="widget-list">
+            <div class="widget">
+                <span class="handle"></span>
+                <span class="label">Item 2</span>
+                <a class="remove" href="#" onclick="removeFromPalette(this)">x</a>
+            </div>
+            <div class="widget">
+                <span class="handle"></span>
+                <span class="label">Item 1</span>
+                <a class="remove" href="#" onclick="removeFromPalette(this)">x</a>
+            </div>
+            <div class="widget">
+                <span class="handle"></span>
+                <span class="label">Item 3</span>
+                <a class="remove" href="#" onclick="removeFromPalette(this)">x</a>
+            </div>
+            -->
+        <div class="widget-list" wicket:id="widgetList"></div>
+        <button onclick="sortWidgets()">Sort</button>
+    </div>
+
+    <div class="panel right">
+        <h2>Items</h2>
+        <!--
+        <div id="chosen-items" class="widget-list widget-palette">
+        </div>
+        -->
+        <div wicket:id="widgetPalette" class="widget-palette"></div>
+    </div>
+
+    <script src="js/sort.js"></script>
+
+</wicket:extend>
+
+</html>

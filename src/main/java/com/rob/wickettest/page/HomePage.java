@@ -14,6 +14,7 @@ public class HomePage extends AbstractPage
     private static final String FORM_ID = "formPageLink";
     private static final String VALIDATION_ID = "validationPageLink";
     private static final String ATTRIBUTE_ID = "attributePageLink";
+    private static final String SORTABLE_ID = "sortablePageLink";
 
     public HomePage()
     {
@@ -51,6 +52,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(AttributePage.class);
+            }
+        });
+        add(new Link<Void>(SORTABLE_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(SortablePage.class);
             }
         });
     }

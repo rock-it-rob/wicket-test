@@ -13,3 +13,61 @@ input {
 ul li {
 	list-style: none;
 }
+
+.panel {
+	border: 1px solid #58d;
+	padding: 2px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.left {
+	width: 200px;
+}
+
+.right {
+	max-width: 800;
+}
+
+.widget-list {
+	min-width: 100px;
+	min-height: 310px;
+}
+
+.widget-list .widget {
+	border: 1px solid #eee;
+}
+
+.widget-list .handle {
+	display: block;
+	height: 6px;
+	background: #ccc;
+	border-bottom: 1px solid #ddd;
+}
+
+.widget-list .label {
+	font-size: 1.2em;
+	color: #084;
+}
+
+.widget-list a.remove {
+	visibility: hidden;
+	text-decoration: none;
+	color: #fff;
+	background: #d00;
+	float: right;
+}
+
+.widget-palette {
+	min-width: 400px;
+	min-height: 100px;
+	border: 1px solid #a55;
+}
+
+.widget-palette a.remove {
+	visibility: visible;
+}
+
+.widget-ghost {
+	opacity: 0.3;
+}
