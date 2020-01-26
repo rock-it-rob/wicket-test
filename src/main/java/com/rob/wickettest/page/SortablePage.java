@@ -2,6 +2,7 @@ package com.rob.wickettest.page;
 
 import com.rob.wickettest.component.widget.AbstractWidget;
 import com.rob.wickettest.component.widget.UserCountWidget;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class SortablePage extends AbstractPage
 {
     private static final String WIDGET_PALETTE_ID = "widgetPaletteList";
-    private static final String WIDGET_CANVAS_ID = "widgetCanvas";
+    private static final String WIDGET_CANVAS_ID = "widgetCanvasList";
 
     private final ArrayList<AbstractWidget> paletteWidgets = new ArrayList<>();
     private final ArrayList<AbstractWidget> widgets = new ArrayList<>();

@@ -1,6 +1,6 @@
 * {
-	padding: 4px;
-	margin: 2px;
+	padding: 0px;
+	margin: 0px;
 	text-align: center;
 	font-family: sans-serif;
 	font-size: 18px;
@@ -14,15 +14,22 @@ ul li {
 	list-style: none;
 }
 
+.widget {
+	height: 134px;
+	width: 134px;
+	border: 1px solid #aaa;
+	background: #fff;
+	padding: 2px;
+}
+
 .widget .handle {
 	display: block;
-	height: 6px;
+	height: 20px;
 	background: #ccc;
-	border-bottom: 1px solid #ddd;
 }
 
 .widget .label {
-	font-size: 1.2em;
+	font-size: .9em;
 	color: #084;
 }
 
@@ -33,7 +40,7 @@ ul li {
 	float: right;
 }
 
-.widget-container {
+.widget-canvas {
 	min-height: 280px;
 	border: 1px solid #a55;
 }
@@ -45,4 +52,10 @@ ul li {
 .widget-palette {
 	height: 140px;
 	border: 1px solid #ddd;
+	padding: 2px;
+	background: #eee;
+}
+
+.widget-palette .widget a.remove {
+	visibility: hidden;
 }
