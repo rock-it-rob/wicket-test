@@ -2,10 +2,26 @@ $(document).ready(startSort());
 
 function startSort()
 {
-  Sortable.create($(".widget-canvas").get(0), {
+  Sortable.create(document.getElementsByClassName("widget-palette")[0], {
     handle: '.handle',
     animation: 120,
     direction: 'horizontal',
-    ghostClass: 'widget-ghost'
+    ghostClass: 'widget-ghost',
+    group: {
+      name: 'palette'
+    },
+    dataIdAttr: 'data-id'
+  });
+
+  Sortable.create(document.getElementsByClassName("widget-canvas")[0], {
+    handle: '.handle',
+    animation: 120,
+    direction: 'horizontal',
+    ghostClass: 'widget-ghost',
+    group: {
+      name: 'canvas',
+      put: ['palette']
+    },
+    dataIdAttr: 'data-id'
   });
 }

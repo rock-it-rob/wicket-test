@@ -1,5 +1,8 @@
 package com.rob.wickettest.component.widget;
 
+import com.rob.wickettest.page.AbstractPage;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -8,7 +11,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
 /**
- * AbstractWidget represents a drag-and-drop component on the page.
+ * AbstractWidget represents a drag-and-drop widget component on the page.
  *
  * @author Rob Benton
  */
@@ -17,8 +20,10 @@ public abstract class AbstractWidget extends Panel
     private static final String WIDGET_ID = "widget";
     private static final String TITLE_ID = "title";
     private static final String REMOVE_LINK_ID = "removeLink";
+    private static final String DATA_ID_ATTRIBUTE = "data-id";
 
     private String title;
+    private String dataId;
 
     protected WebMarkupContainer widget;
 
@@ -40,6 +45,7 @@ public abstract class AbstractWidget extends Panel
         super.onInitialize();
 
         widget = new WebMarkupContainer(WIDGET_ID);
+        widget.add(new AttributeModifier(DATA_ID_ATTRIBUTE, dataId));
         add(widget);
 
         final Label titleLabel = new Label(TITLE_ID, new Model<>(title));
@@ -54,6 +60,23 @@ public abstract class AbstractWidget extends Panel
             }
         };
         widget.add(removeLink);
+
+        add(new AjaxEventBehavior("drop")
+        {
+            @Override
+            protected void onEvent(AjaxRequestTarget target)
+            {
+
+                // todo:
+                // 1. Get the sortable ID of the widget.
+                // 2. Update the widget sortable ID.
+                // 3. Insert the widget into the sorted set.
+                // 4. If the widget is new update its model.
+
+                info("dropped: " + getId() + " has dataId of: " + dataId);
+                target.add(((AbstractPage) getPage()).getFeedbackPanel());
+            }
+        });
     }
 
     /**

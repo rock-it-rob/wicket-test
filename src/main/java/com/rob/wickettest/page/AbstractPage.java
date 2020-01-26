@@ -7,12 +7,20 @@ public abstract class AbstractPage extends WebPage
 {
     private static final long serialVersionUID = 1L;
 
+    protected ToastrFeedbackPanel feedbackPanel;
+
     @Override
     protected void onInitialize()
     {
         super.onInitialize();
 
-        final ToastrFeedbackPanel feedbackPanel = new ToastrFeedbackPanel("feedbackPanel");
+        feedbackPanel = new ToastrFeedbackPanel("feedbackPanel");
+        feedbackPanel.setOutputMarkupId(true);
         add(feedbackPanel);
+    }
+
+    public ToastrFeedbackPanel getFeedbackPanel()
+    {
+        return feedbackPanel;
     }
 }
