@@ -22,15 +22,8 @@ function startSort()
       name: 'canvas',
       put: ['palette']
     },
-    dataIdAttr: 'data-id',
-    onSort: onCanvasSort
+    dataIdAttr: 'data-id'
   });
-}
-
-function onCanvasSort(event)
-{
-  $('#canvas-order').val(getCanvasDataIdOrder());
-  $('#canvas-order').trigger('click');
 }
 
 function getCanvasDataIdOrder()

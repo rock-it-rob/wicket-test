@@ -1,26 +1,20 @@
 package com.rob.wickettest.component.widget;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.ajax.attributes.CallbackParameter;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.HiddenField;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WidgetCanvas extends Panel
 {
@@ -28,14 +22,12 @@ public class WidgetCanvas extends Panel
 
     private static final String CANVAS_ID = "canvas";
     private static final String WIDGETS_ID = "widgets";
-    private static final String CANVAS_ORDER_ID = "canvasOrder";
 
-    private final CanvasModel canvasModel = new CanvasModel();
+    private ArrayList<String> canvasOrder = new ArrayList<>();
 
     public WidgetCanvas(String id)
     {
         super(id);
-        setDefaultModel(new CompoundPropertyModel<>(canvasModel));
     }
 
     @Override
@@ -51,33 +43,14 @@ public class WidgetCanvas extends Panel
             // todo: add widgets
         };
         canvas.add(widgets);
-
-        final TextField<String> canvasOrderField = new TextField<>(CANVAS_ORDER_ID);
-        add(canvasOrderField);
-        canvasOrderField.add(new AjaxFormComponentUpdatingBehavior("click")
-        {
-            @Override
-            protected void onUpdate(AjaxRequestTarget target)
-            {
-                log.info("click: " + canvasModel.canvasOrder);
-            }
-        });
-        /*
-        canvasOrderField.add(new AjaxEventBehavior("click")
-        {
-            @Override
-            protected void onEvent(AjaxRequestTarget target)
-            {
-                log.info("click: " + canvasOrder);
-            }
-        });
-        */
     }
 
 
     public static final class CanvasDropBehavior extends AjaxEventBehavior
     {
         private static final String EVENT = "dragend";
+        private static final String ORDER_PARAM = "order";
+        private static final String DEP = String.format("return { '%s': getCanvasDataIdOrder() };", ORDER_PARAM);
 
         public CanvasDropBehavior()
         {
@@ -88,42 +61,28 @@ public class WidgetCanvas extends Panel
         protected void onEvent(AjaxRequestTarget target)
         {
             // todo: make abstract. Real work is done in respond method.
-            log.info("Dropping");
-            log.info("getCallbackScript(): " + getCallbackScript());
-            log.info("getCallbackFunction(): " + getCallbackFunction());
-            //log.info("getCallbackFunctionBody(): " + getCallbackFunctionBody());
-            final AjaxRequestAttributes attrs = getAttributes();
-            for (CharSequence dep: attrs.getDynamicExtraParameters())
-            {
-                log.info("dynamic param: " + dep);
-            }
-            for (Map.Entry<String, Object> e : attrs.getExtraParameters().entrySet())
-            {
-                log.info("param " + e.getKey() + ": " + e.getValue());
-            }
-            log.info("URL: " + getCallbackUrl());
+            log.info("Drag end");
 
             final IRequestParameters params = RequestCycle.get().getRequest().getRequestParameters();
+            final List<StringValue> order = params.getParameterValues(ORDER_PARAM);
+
+            // TODO: Put code here for assigning order.
+
+            log.info("order: " + order);
+            /*
             for (String n : params.getParameterNames())
             {
                 log.info("Request parameter " + n + ": " + params.getParameterValue(n));
             }
+            */
         }
 
         @Override
         protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
         {
             super.updateAjaxAttributes(attributes);
-            //attributes.getDynamicExtraParameters().add("getCanvasDataIdOrder()");
-            attributes.getDynamicExtraParameters().add("return { 'order': getCanvasDataIdOrder() };");
+            attributes.getDynamicExtraParameters().add(DEP);
         }
-    }
-
-    private static final class CanvasModel implements Serializable
-    {
-        private static final long serialVersionUID = 1L;
-
-        private String canvasOrder;
     }
 }
 
