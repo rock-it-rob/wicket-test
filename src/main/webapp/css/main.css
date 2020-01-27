@@ -20,6 +20,7 @@ ul li {
 	border: 1px solid #aaa;
 	background: #fff;
 	padding: 2px;
+	display: inline-block;
 }
 
 .widget .handle {
@@ -53,7 +54,9 @@ ul li {
 	height: 140px;
 	border: 1px solid #ddd;
 	padding: 2px;
-	background: #eee;
+	background: #985;
+
+	text-align: left;
 }
 
 .widget-palette .widget a.remove {

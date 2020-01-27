@@ -26,6 +26,7 @@ public class UserCountWidget extends AbstractWidget
         setDefaultModel(new CompoundPropertyModel<WidgetModel>(model));
     }
 
+    /*
     @Override
     protected void maskData()
     {
@@ -33,6 +34,7 @@ public class UserCountWidget extends AbstractWidget
         model.newUsers = 2;
         model.removedUsers = 1;
     }
+    */
 
     @Override
     protected void update(AjaxRequestTarget target)
@@ -43,7 +45,7 @@ public class UserCountWidget extends AbstractWidget
         model.newUsers = 4;
         model.removedUsers = 2;
 
-        target.add(widget);
+        target.add(this);
     }
 
     private static final class WidgetModel

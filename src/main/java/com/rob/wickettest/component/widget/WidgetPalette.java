@@ -13,10 +13,10 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 public class WidgetPalette extends Panel
 {
     private static final String PALETTE_ID = "palette";
-    private static final String LIST_ID = "paletteList";
+    private static final String LIST_ID = "widgetList";
 
     private final WebMarkupContainer paletteContainer = new WebMarkupContainer(PALETTE_ID);
-    private final RepeatingView paletteList = new RepeatingView(LIST_ID);
+    private final RepeatingView widgetList = new RepeatingView(LIST_ID);
 
     public WidgetPalette(String id)
     {
@@ -29,7 +29,7 @@ public class WidgetPalette extends Panel
         super.onInitialize();
 
         add(paletteContainer);
-        paletteContainer.add(paletteList);
+        paletteContainer.add(widgetList);
     }
 
     /**
@@ -39,7 +39,9 @@ public class WidgetPalette extends Panel
      */
     public void addWidget(WidgetCreator widgetCreator)
     {
-        paletteList.add(widgetCreator.create(paletteList.newChildId()));
+        final AbstractWidget widget = widgetCreator.create(widgetList.newChildId());
+        widgetList.add(widget);
+        widget.setDataId(String.valueOf(widgetList.size()));
     }
 
     @FunctionalInterface

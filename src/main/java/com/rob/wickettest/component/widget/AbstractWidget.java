@@ -4,7 +4,6 @@ import com.rob.wickettest.page.AbstractPage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -17,15 +16,13 @@ import org.apache.wicket.model.Model;
  */
 public abstract class AbstractWidget extends Panel
 {
-    private static final String WIDGET_ID = "widget";
     private static final String TITLE_ID = "title";
     private static final String REMOVE_LINK_ID = "removeLink";
     private static final String DATA_ID_ATTRIBUTE = "data-id";
 
     private String title;
-    private String dataId;
 
-    protected WebMarkupContainer widget;
+    protected String dataId;
 
     /**
      * Creates a new instance with the given title and model.
@@ -44,12 +41,10 @@ public abstract class AbstractWidget extends Panel
     {
         super.onInitialize();
 
-        widget = new WebMarkupContainer(WIDGET_ID);
-        widget.add(new AttributeModifier(DATA_ID_ATTRIBUTE, dataId));
-        add(widget);
+        add(new AttributeModifier(DATA_ID_ATTRIBUTE, new Model<>(dataId)));
 
         final Label titleLabel = new Label(TITLE_ID, new Model<>(title));
-        widget.add(titleLabel);
+        add(titleLabel);
 
         final Link<Void> removeLink = new Link<Void>(REMOVE_LINK_ID)
         {
@@ -59,7 +54,7 @@ public abstract class AbstractWidget extends Panel
                 // TODO: add remove logic
             }
         };
-        widget.add(removeLink);
+        add(removeLink);
 
         add(new AjaxEventBehavior("drop")
         {
@@ -68,11 +63,11 @@ public abstract class AbstractWidget extends Panel
             {
 
                 // todo:
-                // 1. Get the sortable ID of the widget.
-                // 2. Update the widget sortable ID.
-                // 3. Insert the widget into the sorted set.
-                // 4. If the widget is new update its model.
+                // 1. Update the data Id attributes of the widgets on the canvas.
+                // 2. Insert the widget into the sorted set.
+                // 3. If the widget is new update its model.
 
+                System.out.println("Dropped");
                 info("dropped: " + getId() + " has dataId of: " + dataId);
                 target.add(((AbstractPage) getPage()).getFeedbackPanel());
             }
@@ -88,7 +83,7 @@ public abstract class AbstractWidget extends Panel
      * <p>
      * Use this method to set the model to some dummy values.
      */
-    protected abstract void maskData();
+    //protected abstract void maskData();
 
     /**
      * This method is invoked whenever an ajax request would trigger an update
@@ -98,4 +93,14 @@ public abstract class AbstractWidget extends Panel
      * @param target
      */
     protected abstract void update(AjaxRequestTarget target);
+
+    public String getDataId()
+    {
+        return dataId;
+    }
+
+    public void setDataId(String dataId)
+    {
+        this.dataId = dataId;
+    }
 }

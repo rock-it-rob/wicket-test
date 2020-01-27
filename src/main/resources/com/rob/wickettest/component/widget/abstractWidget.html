@@ -2,11 +2,10 @@
       xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
 
     <wicket:panel>
-        <div class="widget" wicket:id="widget">
-            <span class="handle"></span>
-            <span wicket:id="title" class="label"></span>
-            <a wicket:id="removeLink" class="remove" href="#">x</a>
-        </div>
+        <span class="handle"></span>
+        <span wicket:id="title" class="label"></span>
+        <a wicket:id="removeLink" class="remove" href="#">x</a>
+        <button onclick="getSortableId(this)">ID</button>
     </wicket:panel>
 
 </html>

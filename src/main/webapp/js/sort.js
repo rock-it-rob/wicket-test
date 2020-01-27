@@ -25,3 +25,16 @@ function startSort()
     dataIdAttr: 'data-id'
   });
 }
+
+function getSortableId(element)
+{
+  /*
+  var id = $(element).attr('data-id');
+  alert($(element).parent().html() + ": " + id);
+  */
+ var widget = $(element).parents('.widget').first();
+ alert("data-id: " + widget.attr('data-id'));
+
+ var s = Sortable.get($('.widget-palette').get(0));
+ alert(s.toArray());
+}
