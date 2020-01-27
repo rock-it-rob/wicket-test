@@ -2,6 +2,7 @@ package com.rob.wickettest.page;
 
 import com.rob.wickettest.component.widget.HamburgerWidget;
 import com.rob.wickettest.component.widget.UserCountWidget;
+import com.rob.wickettest.component.widget.WidgetCanvas;
 import com.rob.wickettest.component.widget.WidgetPalette;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
@@ -13,10 +14,7 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 public class SortablePage extends AbstractPage
 {
     private static final String WIDGET_PALETTE_ID = "widgetPalette";
-    private static final String WIDGET_CANVAS_ID = "widgetCanvasList";
-
-    //private final ArrayList<AbstractWidget> paletteWidgets = new ArrayList<>();
-    //private final ArrayList<AbstractWidget> widgets = new ArrayList<>();
+    private static final String WIDGET_CANVAS_ID = "widgetCanvas";
 
     @Override
     protected void onInitialize()
@@ -28,10 +26,7 @@ public class SortablePage extends AbstractPage
         widgetPalette.addWidget((id -> new HamburgerWidget(id)));
         add(widgetPalette);
 
-        final RepeatingView widgetListView = new RepeatingView(WIDGET_CANVAS_ID)
-        {
-            // todo: add widgets
-        };
-        add(widgetListView);
+        final WidgetCanvas widgetCanvas = new WidgetCanvas(WIDGET_CANVAS_ID);
+        add(widgetCanvas);
     }
 }

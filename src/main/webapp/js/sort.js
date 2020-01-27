@@ -22,19 +22,21 @@ function startSort()
       name: 'canvas',
       put: ['palette']
     },
-    dataIdAttr: 'data-id'
+    dataIdAttr: 'data-id',
+    onSort: onCanvasSort
   });
 }
 
-function getSortableId(element)
+function onCanvasSort(event)
 {
-  /*
-  var id = $(element).attr('data-id');
-  alert($(element).parent().html() + ": " + id);
-  */
- var widget = $(element).parents('.widget').first();
- alert("data-id: " + widget.attr('data-id'));
+  $('#canvas-order').val(getCanvasDataIdOrder());
+  $('#canvas-order').trigger('click');
+}
 
- var s = Sortable.get($('.widget-palette').get(0));
- alert(s.toArray());
+function getCanvasDataIdOrder()
+{
+  var canvas = $(".widget-canvas").get(0);
+  var sortable = Sortable.get(canvas);
+
+  return sortable.toArray();
 }

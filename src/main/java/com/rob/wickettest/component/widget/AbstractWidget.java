@@ -8,6 +8,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * AbstractWidget represents a drag-and-drop widget component on the page.
@@ -16,6 +18,8 @@ import org.apache.wicket.model.Model;
  */
 public abstract class AbstractWidget extends Panel
 {
+    private static final Logger log = LoggerFactory.getLogger(AbstractWidget.class);
+
     private static final String TITLE_ID = "title";
     private static final String REMOVE_LINK_ID = "removeLink";
     private static final String DATA_ID_ATTRIBUTE = "data-id";
@@ -56,6 +60,7 @@ public abstract class AbstractWidget extends Panel
         };
         add(removeLink);
 
+        /*
         add(new AjaxEventBehavior("drop")
         {
             @Override
@@ -67,9 +72,26 @@ public abstract class AbstractWidget extends Panel
                 // 2. Insert the widget into the sorted set.
                 // 3. If the widget is new update its model.
 
-                System.out.println("Dropped");
                 info("dropped: " + getId() + " has dataId of: " + dataId);
                 target.add(((AbstractPage) getPage()).getFeedbackPanel());
+            }
+        });
+        */
+        add(new WidgetCanvas.CanvasDropBehavior());
+
+        add(new AjaxEventBehavior("dragend")
+        {
+            @Override
+            protected void onEvent(AjaxRequestTarget target)
+            {
+                // Find the parent canvas. If there isn't one get out.
+                final WidgetCanvas widgetCanvas = findParent(WidgetCanvas.class);
+                if (widgetCanvas == null)
+                {
+                    return;
+                }
+
+
             }
         });
     }
