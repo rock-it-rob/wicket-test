@@ -14,6 +14,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.IRequestParameters;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +77,7 @@ public class WidgetCanvas extends Panel
 
     public static final class CanvasDropBehavior extends AjaxEventBehavior
     {
-        private static final String EVENT = "drop"; // todo: FIX ME! Should be dragend event.
+        private static final String EVENT = "dragend";
 
         public CanvasDropBehavior()
         {
@@ -100,6 +102,12 @@ public class WidgetCanvas extends Panel
                 log.info("param " + e.getKey() + ": " + e.getValue());
             }
             log.info("URL: " + getCallbackUrl());
+
+            final IRequestParameters params = RequestCycle.get().getRequest().getRequestParameters();
+            for (String n : params.getParameterNames())
+            {
+                log.info("Request parameter " + n + ": " + params.getParameterValue(n));
+            }
         }
 
         @Override
@@ -107,7 +115,7 @@ public class WidgetCanvas extends Panel
         {
             super.updateAjaxAttributes(attributes);
             //attributes.getDynamicExtraParameters().add("getCanvasDataIdOrder()");
-            attributes.getDynamicExtraParameters().add("return { 'order': getCanvasDataIdOrder() }");
+            attributes.getDynamicExtraParameters().add("return { 'order': getCanvasDataIdOrder() };");
         }
     }
 
