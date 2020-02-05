@@ -14,6 +14,17 @@
         <button wicket:id="wicketButton">Wicket Behavior</button>
     </form>
 
+    <div style="margin: 10px;">
+        <h2>Research Results</h2>
+        <p style="max-width: 50%; font-size: .9em; margin: 20px auto;">
+            What I have found is that it is possible to call a custom ajax behavior defined in wicket from a
+            javascript function. However this call causes the wicket page render count to increase which causes
+            subsequent ajax calls to fail. Wicket has a way of responding to ajax calls without increasing the page
+            render count, but I have not discovered exactly how it does this and whether this is possible to do for a
+            custom behavior.
+        </p>
+    </div>
+
 </wicket:extend>
 
 </html>
