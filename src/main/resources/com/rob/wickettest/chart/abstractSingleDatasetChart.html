@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+<wicket:panel>
+    <ul class="chart-dataset">
+        <li wicket:id="dataset">
+            <input type="hidden" wicket:id="datasetValue" />
+        </li>
+    </ul>
+    <ul class="chart-dataset-labels">
+        <li wicket:id="dataset-label">
+            <input type="hidden" wicket:id="labelValue" />
+        </li>
+    </ul>
+
+    <div wicket:id="chartHolder" class='chart-holder'>
+        <canvas id="chart"></canvas>
+    </div>
+
+    <script>
+        $(document).ready(createChart());
+        function createChart() {
+            var chart = new Chart($('#chart'), {
+                type: 'bar',
+                data: {
+                    labels: $('.chart-dataset-labels input').map(function () { return this.value; }),
+                    datasets: [{
+                        data: $('.chart-dataset input').map(function () { return this.value; })
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+    </script>
+</wicket:panel>
+
+</html>
