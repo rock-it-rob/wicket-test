@@ -1,8 +1,5 @@
 package com.rob.wickettest.chart;
 
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
-
 import java.util.List;
 
 public interface ChartDataset
@@ -11,13 +8,28 @@ public interface ChartDataset
 
     List<Number> getData();
 
-    default IModel<List<String>> getLabelModel()
+    default String getLabelsValue()
     {
-        return new PropertyModel<>(this, "labels");
+        return String.join(" ", getLabels().toArray(new String[0]));
     }
 
-    default IModel<List<Number>> getDataModel()
+    default void setLabelsValue()
     {
-        return new PropertyModel<>(this, "data");
+        throw new UnsupportedOperationException();
+    }
+
+    default String getDataValue()
+    {
+        final String[] values = getData()
+                .stream()
+                .map(value -> value.toString())
+                .toArray(String[]::new);
+
+        return String.join(" ", values);
+    }
+
+    default void setDataValue()
+    {
+        throw new UnsupportedOperationException();
     }
 }
