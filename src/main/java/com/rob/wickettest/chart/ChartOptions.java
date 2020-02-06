@@ -4,21 +4,9 @@ import java.util.List;
 
 public interface ChartOptions
 {
-    List<String> getLabels();
-
     List<Number> getData();
 
     List<String> getBackgroundColor();
-
-    default String getLabelsValue()
-    {
-        return String.join(" ", getLabels().toArray(new String[0]));
-    }
-
-    default void setLabelsValue()
-    {
-        throw new UnsupportedOperationException();
-    }
 
     default String getDataValue()
     {

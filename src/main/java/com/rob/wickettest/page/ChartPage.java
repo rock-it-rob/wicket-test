@@ -35,6 +35,7 @@ public class ChartPage extends AbstractPage
     {
         super.onInitialize();
 
+        chart.setLabels("Green", "Blue", "Red");
         chart.setOutputMarkupId(true);
         add(chart);
 
@@ -69,8 +70,6 @@ public class ChartPage extends AbstractPage
             }
         };
         datasetForm.add(submitButton);
-
-
     }
 
     private static final class WicketModel implements ChartOptions
@@ -83,12 +82,6 @@ public class ChartPage extends AbstractPage
 
         @NotNull
         private Integer redCount = 1;
-
-        @Override
-        public List<String> getLabels()
-        {
-            return Arrays.asList("Green", "Blue", "Red");
-        }
 
         @Override
         public List<Number> getData()
