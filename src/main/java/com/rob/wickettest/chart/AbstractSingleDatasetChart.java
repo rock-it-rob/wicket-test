@@ -5,11 +5,11 @@ import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
 
 /**
  * AbstractSingleDatasetChart is a wicket component for a Chart.js chart that has a single data set.
  *
+ * @param <T> the type of dataset
  * @author Rob Benton
  */
 public abstract class AbstractSingleDatasetChart extends Panel
@@ -20,12 +20,12 @@ public abstract class AbstractSingleDatasetChart extends Panel
     private static final String LABEL_VALUE_ID = "labelValue";
     private static final String CHART_HOLDER_ID = "chartHolder";
 
-    private final ChartDataset dataset;
+    private final ChartDataset chartDataset;
 
-    protected AbstractSingleDatasetChart(String id, ChartDataset dataset)
+    protected AbstractSingleDatasetChart(String id, ChartDataset chartDataset)
     {
         super(id);
-        this.dataset = dataset;
+        this.chartDataset = chartDataset;
     }
 
     @Override
@@ -33,18 +33,18 @@ public abstract class AbstractSingleDatasetChart extends Panel
     {
         super.onInitialize();
 
-        final ListView<IModel<Number>> datasetList = new ListView<IModel<Number>>(DATASET_ID, dataset.getData())
+        final ListView<Number> datasetList = new ListView<Number>(DATASET_ID, chartDataset.getDataModel())
         {
             @Override
-            protected void populateItem(ListItem<IModel<Number>> item)
+            protected void populateItem(ListItem<Number> item)
             {
-                final HiddenField<Number> hiddenField = new HiddenField<>(DATASET_VALUE_ID, item.getModelObject());
+                final HiddenField<Number> hiddenField = new HiddenField<>(DATASET_VALUE_ID, item.getModel());
                 item.add(hiddenField);
             }
         };
         add(datasetList);
 
-        final ListView<String> labelList = new ListView<String>(LABEL_ID, dataset.getLabels())
+        final ListView<String> labelList = new ListView<String>(LABEL_ID, chartDataset.getLabelModel())
         {
             @Override
             protected void populateItem(ListItem<String> item)

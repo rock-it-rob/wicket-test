@@ -1,12 +1,10 @@
 package com.rob.wickettest.chart;
 
-import org.apache.wicket.model.IModel;
-
 public class DoughnutChart extends AbstractSingleDatasetChart
 {
-    public DoughnutChart(String id, ChartDataset dataset)
+    public DoughnutChart(String id, ChartDataset chartDataset)
     {
-        super(id, dataset);
+        super(id, chartDataset);
     }
 
 

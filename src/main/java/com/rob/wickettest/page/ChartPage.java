@@ -8,12 +8,10 @@ import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ChartPage extends AbstractPage
 {
@@ -25,7 +23,7 @@ public class ChartPage extends AbstractPage
     private static final String CHART_ID = "chart";
 
     private final WicketModel wicketModel = new WicketModel();
-    private final ChartDataset chartDataset = new ChartDataset();
+    private final DoughnutChart chart = new DoughnutChart(CHART_ID, wicketModel);
 
     public ChartPage()
     {
@@ -37,18 +35,8 @@ public class ChartPage extends AbstractPage
     {
         super.onInitialize();
 
-        final DoughnutChart chart = new DoughnutChart(CHART_ID, chartDataset);
         chart.setOutputMarkupId(true);
         add(chart);
-
-        // Add the page model to the chart dataset model.
-        chartDataset.getData().add(new PropertyModel<>(wicketModel, "greenCount"));
-        chartDataset.getData().add(new PropertyModel<>(wicketModel, "blueCount"));
-        chartDataset.getData().add(new PropertyModel<>(wicketModel, "redCount"));
-
-        chartDataset.getLabels().add("Green");
-        chartDataset.getLabels().add("Blue");
-        chartDataset.getLabels().add("Red");
 
         final Form<Object> datasetForm = new Form<>(FORM_ID);
         add(datasetForm);
@@ -70,6 +58,7 @@ public class ChartPage extends AbstractPage
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
             {
+                chart.modelChanged();
                 target.add(chart);
             }
 
@@ -84,7 +73,7 @@ public class ChartPage extends AbstractPage
 
     }
 
-    private static final class WicketModel
+    private static final class WicketModel implements ChartDataset
     {
         @NotNull
         private Integer greenCount = new Integer(3);
@@ -94,5 +83,17 @@ public class ChartPage extends AbstractPage
 
         @NotNull
         private Integer redCount = new Integer(1);
+
+        @Override
+        public List<String> getLabels()
+        {
+            return Arrays.asList(new String[]{"Green", "Blue", "Red"});
+        }
+
+        @Override
+        public List<Number> getData()
+        {
+            return Arrays.asList(new Number[]{greenCount, blueCount, redCount});
+        }
     }
 }

@@ -1,38 +1,23 @@
 package com.rob.wickettest.chart;
 
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-public class ChartDataset implements Serializable
+public interface ChartDataset
 {
-    private static final long serialVersionUID = 1L;
+    List<String> getLabels();
 
-    private ArrayList<String> labels = new ArrayList<>();
-    private ArrayList<IModel<Number>> data = new ArrayList<>();
+    List<Number> getData();
 
-    public List<String> getLabels()
+    default IModel<List<String>> getLabelModel()
     {
-        return labels;
+        return new PropertyModel<>(this, "labels");
     }
 
-    public void setLabels(Collection<String> labels)
+    default IModel<List<Number>> getDataModel()
     {
-        this.labels.clear();
-        this.labels.addAll(labels);
-    }
-
-    public List<IModel<Number>> getData()
-    {
-        return data;
-    }
-
-    public void setData(Collection<IModel<Number>> data)
-    {
-        this.data.clear();
-        this.data.addAll(data);
+        return new PropertyModel<>(this, "data");
     }
 }
