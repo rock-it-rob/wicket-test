@@ -2,31 +2,13 @@
     xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
 
 <wicket:panel>
-    <input id='dataset' type="hidden" wicket:id="dataset" />
+    <input id='data' type="hidden" wicket:id="data" />
+    <input id='backgroundColor' type='hidden' wicket:id='backgroundColor' />
     <input id='labels' type="hidden" wicket:id="labels" />
 
     <div wicket:id="chartHolder" class='chart-holder'>
         <canvas id="chart"></canvas>
     </div>
-
-    <script>
-        $(document).ready(createChart());
-        function createChart() {
-            var chart = new Chart($('#chart'), {
-                type: 'bar',
-                data: {
-                    labels: $('#labels').val().split(' '),
-                    datasets: [{
-                        data: $('#dataset').val().split(' ')
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true
-                }
-            });
-        }
-    </script>
 </wicket:panel>
 
 </html>

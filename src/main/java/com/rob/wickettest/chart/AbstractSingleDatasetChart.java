@@ -1,5 +1,6 @@
 package com.rob.wickettest.chart;
 
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -12,7 +13,8 @@ import org.apache.wicket.model.PropertyModel;
  */
 public abstract class AbstractSingleDatasetChart extends Panel
 {
-    private static final String DATASET_ID = "dataset";
+    private static final String DATA_ID = "data";
+    private static final String BACKGROUNDCOLOR_ID = "backgroundColor";
     private static final String LABELS_ID = "labels";
     private static final String CHART_HOLDER_ID = "chartHolder";
 
@@ -25,15 +27,24 @@ public abstract class AbstractSingleDatasetChart extends Panel
     }
 
     @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        super.renderHead(response);
+    }
+
+    @Override
     protected void onInitialize()
     {
         super.onInitialize();
 
-        final HiddenField<String> labelsField = new HiddenField<String>(LABELS_ID, new PropertyModel<>(chartDataset, "labelsValue"));
+        final HiddenField<String> labelsField = new HiddenField<>(LABELS_ID, new PropertyModel<>(chartDataset, "labelsValue"));
         add(labelsField);
 
-        final HiddenField<String> datasetField = new HiddenField<>(DATASET_ID, new PropertyModel<>(chartDataset, "dataValue"));
-        add(datasetField);
+        final HiddenField<String> backgroundColorField = new HiddenField<>(BACKGROUNDCOLOR_ID, new PropertyModel<>(chartDataset, "backgroundColorValue"));
+        add(backgroundColorField);
+
+        final HiddenField<String> dataField = new HiddenField<>(DATA_ID, new PropertyModel<>(chartDataset, "dataValue"));
+        add(dataField);
 
         final WebMarkupContainer chartHolder = new WebMarkupContainer(CHART_HOLDER_ID);
         add(chartHolder);

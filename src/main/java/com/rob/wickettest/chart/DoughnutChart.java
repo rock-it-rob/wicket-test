@@ -1,5 +1,8 @@
 package com.rob.wickettest.chart;
 
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+
 public class DoughnutChart extends AbstractSingleDatasetChart
 {
     public DoughnutChart(String id, ChartDataset chartDataset)
@@ -7,7 +10,11 @@ public class DoughnutChart extends AbstractSingleDatasetChart
         super(id, chartDataset);
     }
 
+    @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        super.renderHead(response);
 
-    // TODO: Eventually there needs to be custom javascript in here for
-    // creating the specific type of chart.
+        response.render(OnDomReadyHeaderItem.forScript("createDoughnutChart();"));
+    }
 }

@@ -8,6 +8,8 @@ public interface ChartDataset
 
     List<Number> getData();
 
+    List<String> getBackgroundColor();
+
     default String getLabelsValue()
     {
         return String.join(" ", getLabels().toArray(new String[0]));
@@ -29,6 +31,16 @@ public interface ChartDataset
     }
 
     default void setDataValue()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    default String getBackgroundColorValue()
+    {
+        return String.join(" ", getBackgroundColor().toArray(new String[0]));
+    }
+
+    default void setBackgroundColorValue()
     {
         throw new UnsupportedOperationException();
     }

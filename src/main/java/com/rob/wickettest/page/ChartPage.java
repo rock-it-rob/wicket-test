@@ -95,5 +95,11 @@ public class ChartPage extends AbstractPage
         {
             return Arrays.asList(new Number[]{greenCount, blueCount, redCount});
         }
+
+        @Override
+        public List<String> getBackgroundColor()
+        {
+            return Arrays.asList(new String[]{"#8d8", "#88d", "#d88"});
+        }
     }
 }
