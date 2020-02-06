@@ -1,6 +1,5 @@
 package com.rob.wickettest.chart;
 
-import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -24,12 +23,6 @@ public abstract class AbstractSingleDatasetChart extends Panel
     {
         super(id);
         this.chartDataset = chartDataset;
-    }
-
-    @Override
-    public void renderHead(IHeaderResponse response)
-    {
-        super.renderHead(response);
     }
 
     @Override
