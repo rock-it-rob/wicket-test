@@ -2,7 +2,7 @@ package com.rob.wickettest.chart;
 
 import java.util.List;
 
-public interface ChartDataset
+public interface ChartOptions
 {
     List<String> getLabels();
 

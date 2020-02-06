@@ -1,6 +1,6 @@
 package com.rob.wickettest.page;
 
-import com.rob.wickettest.chart.ChartDataset;
+import com.rob.wickettest.chart.ChartOptions;
 import com.rob.wickettest.chart.DoughnutChart;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -73,7 +73,7 @@ public class ChartPage extends AbstractPage
 
     }
 
-    private static final class WicketModel implements ChartDataset
+    private static final class WicketModel implements ChartOptions
     {
         @NotNull
         private Integer greenCount = 3;

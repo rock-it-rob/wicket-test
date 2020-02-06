@@ -3,11 +3,11 @@ package com.rob.wickettest.chart;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 
-public class DoughnutChart extends AbstractSingleDatasetChart
+public class DoughnutChart extends AbstractChart
 {
-    public DoughnutChart(String id, ChartDataset chartDataset)
+    public DoughnutChart(String id, ChartOptions chartOptions)
     {
-        super(id, chartDataset);
+        super(id, chartOptions);
     }
 
     @Override
