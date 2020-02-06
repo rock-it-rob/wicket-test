@@ -76,18 +76,18 @@ public class ChartPage extends AbstractPage
     private static final class WicketModel implements ChartDataset
     {
         @NotNull
-        private Integer greenCount = new Integer(3);
+        private Integer greenCount = 3;
 
         @NotNull
-        private Integer blueCount = new Integer(5);
+        private Integer blueCount = 5;
 
         @NotNull
-        private Integer redCount = new Integer(1);
+        private Integer redCount = 1;
 
         @Override
         public List<String> getLabels()
         {
-            return Arrays.asList(new String[]{"Green", "Blue", "Red"});
+            return Arrays.asList("Green", "Blue", "Red");
         }
 
         @Override
@@ -99,7 +99,7 @@ public class ChartPage extends AbstractPage
         @Override
         public List<String> getBackgroundColor()
         {
-            return Arrays.asList(new String[]{"#8d8", "#88d", "#d88"});
+            return Arrays.asList("#8d8", "#88d", "#d88");
         }
     }
 }
