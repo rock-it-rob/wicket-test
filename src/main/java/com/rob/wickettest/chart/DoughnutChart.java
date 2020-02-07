@@ -5,9 +5,14 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 
 public class DoughnutChart extends AbstractChart
 {
-    public DoughnutChart(String id, ChartOptions chartOptions)
+    public DoughnutChart(String id)
     {
-        super(id, chartOptions);
+        super(id);
+    }
+
+    public DoughnutChart(String id, ChartDataset chartDataset)
+    {
+        super(id, chartDataset);
     }
 
     @Override
