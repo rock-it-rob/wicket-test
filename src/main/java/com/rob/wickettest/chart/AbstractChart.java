@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * AbstractChart is a wicket component for a Chart.js chart.
@@ -41,9 +42,11 @@ public abstract class AbstractChart extends Panel
         final HiddenField<String> labelsField = new HiddenField<>(LABELS_ID);
         add(labelsField);
 
+        // TODO: Turn into a repeating view
         final HiddenField<String> backgroundColorField = new HiddenField<>(BACKGROUNDCOLOR_ID);
         add(backgroundColorField);
 
+        // TODO: Turn into a repeating view
         final HiddenField<String> dataField = new HiddenField<>(DATA_ID);
         add(dataField);
 
@@ -68,5 +71,17 @@ public abstract class AbstractChart extends Panel
 
         private String labels;
         private ChartDataset chartDataset;
+
+        // TODO: Turn into a list
+        private String getBackgroundColor()
+        {
+            // TODO: Stream values
+        }
+
+        // TODO: Turn into a list
+        private Number getData()
+        {
+            // TODO: Stream values
+        }
     }
 }
