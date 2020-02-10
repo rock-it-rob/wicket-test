@@ -6,7 +6,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * AbstractChart is a wicket component for a Chart.js chart.
@@ -16,8 +16,8 @@ import java.util.List;
 public abstract class AbstractChart extends Panel
 {
     private static final String LABELS_ID = "labels";
-    private static final String BACKGROUNDCOLOR_ID = "chartDataset.backgroundColor";
-    private static final String DATA_ID = "chartDataset.data";
+    private static final String BACKGROUNDCOLOR_ID = "backgroundColor";
+    private static final String DATA_ID = "data";
     private static final String CHART_HOLDER_ID = "chartHolder";
 
     private final WicketModel wicketModel = new WicketModel();
@@ -73,15 +73,22 @@ public abstract class AbstractChart extends Panel
         private ChartDataset chartDataset;
 
         // TODO: Turn into a list
-        private String getBackgroundColor()
+        public String getBackgroundColor()
         {
-            // TODO: Stream values
+            return String.join(" ", chartDataset.getBackgroundColor());
+
         }
 
         // TODO: Turn into a list
-        private Number getData()
+        public String getData()
         {
-            // TODO: Stream values
+            return String.join(" ",
+                    chartDataset.getData()
+                            .stream()
+                            .flatMap(list -> list.stream())
+                            .map(d -> d.toString())
+                            .collect(Collectors.toList())
+            );
         }
     }
 }

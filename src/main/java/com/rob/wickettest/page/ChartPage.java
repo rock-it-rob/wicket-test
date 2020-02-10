@@ -72,7 +72,7 @@ public class ChartPage extends AbstractPage
         datasetForm.add(submitButton);
     }
 
-    private static final class WicketModel implements ChartDataset
+    private static final class WicketModel extends ChartDataset
     {
         @NotNull
         private Integer greenCount = 3;
@@ -84,9 +84,9 @@ public class ChartPage extends AbstractPage
         private Integer redCount = 1;
 
         @Override
-        public List<Number> getData()
+        public List<ChartDataset.Data> getData()
         {
-            return Arrays.asList(new Number[]{greenCount, blueCount, redCount});
+            return Arrays.asList(Data.forValues(greenCount, blueCount, redCount));
         }
 
         @Override
