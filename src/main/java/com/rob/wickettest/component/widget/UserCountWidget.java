@@ -1,6 +1,7 @@
 package com.rob.wickettest.component.widget;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 /**
@@ -12,6 +13,10 @@ import org.apache.wicket.model.CompoundPropertyModel;
 public class UserCountWidget extends AbstractWidget
 {
     private static final String TITLE = "User Statistics";
+
+    private static final String TOTAL_USERS_ID = "totalUsers";
+    private static final String NEW_USERS_ID = "newUsers";
+    private static final String REMOVED_USERS_ID = "removedUsers";
 
     private final WidgetModel model = new WidgetModel();
 
@@ -26,6 +31,24 @@ public class UserCountWidget extends AbstractWidget
         setDefaultModel(new CompoundPropertyModel<WidgetModel>(model));
     }
 
+    @Override
+    protected void onInitialize()
+    {
+        super.onInitialize();
+
+        final Label totalLabel = new Label(TOTAL_USERS_ID);
+        add(totalLabel);
+
+        final Label newLabel = new Label(NEW_USERS_ID);
+        add(newLabel);
+
+        final Label removedLabel = new Label(REMOVED_USERS_ID);
+        add(removedLabel);
+
+        model.totalUsers = 42;
+        model.newUsers = 2;
+        model.removedUsers = 1;
+    }
     /*
     @Override
     protected void maskData()
