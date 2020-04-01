@@ -1,11 +1,16 @@
 package com.rob.wickettest.page;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +39,8 @@ public class ValidationPage extends AbstractPage
     @NotNull
     @Email(message = "A valid email address is required")
     private String emailInputValue;
+
+    private String numeric;
 
     @Override
     protected void onInitialize()
@@ -68,5 +75,51 @@ public class ValidationPage extends AbstractPage
             }
         };
         componentValidateForm.add(componentSubmitButton);
+
+        // Form Validation
+
+        final Form<Void> formValidationForm = new Form<>("formValidationForm");
+        add(formValidationForm);
+
+        final TextField<String> numericInput = new TextField<>("numericInput", new PropertyModel<>(this, "numeric"));
+        numericInput.setRequired(true);
+        formValidationForm.add(numericInput);
+
+        final AjaxButton formValidationSubmitButton = new AjaxButton("formValidationSubmitButton")
+        {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+            {
+                success("You did good!");
+                target.add(getFeedbackPanel());
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form)
+            {
+                target.add(getFeedbackPanel());
+            }
+        };
+        formValidationForm.add(formValidationSubmitButton);
+
+        formValidationForm.add(new IFormValidator()
+        {
+            @Override
+            public FormComponent<?>[] getDependentFormComponents()
+            {
+                return new FormComponent<?>[]{numericInput};
+            }
+
+            @Override
+            public void validate(Form<?> form)
+            {
+                // The model has not been updated at this point so we must obtain the input value to validate through another method.
+                final String value = numericInput.getConvertedInput();
+                if (!value.matches("\\d+"))
+                {
+                    numericInput.error(new ValidationError("Value must be an integer"));
+                }
+            }
+        });
     }
 }
