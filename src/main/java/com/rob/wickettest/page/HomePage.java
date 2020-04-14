@@ -18,6 +18,7 @@ public class HomePage extends AbstractPage
     private static final String JAVASCRIPT_ID = "javascriptPageLink";
     private static final String CHART_ID = "chartPageLink";
     private static final String TINYMCE_ID = "tinymcePageLink";
+    private static final String RESOURCE_ID = "resourcePageLink";
 
     public HomePage()
     {
@@ -87,6 +88,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(TinyMCEPage.class);
+            }
+        });
+        add(new Link<Void>(RESOURCE_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(ResourcePage.class);
             }
         });
     }
