@@ -16,6 +16,7 @@
         <jetty.version>9.4.14.v20181114</jetty.version>
         <slf4j.version>1.7.25</slf4j.version>
         <selenium.version>3.141.5</selenium.version>
+        <joda.time.version>2.9</joda.time.version>
         <app.context>/${project.name}</app.context>
         <app.port>8081</app.port>
         <junit.category>com.rob.wickettest.test.unit.UnitTestCategory</junit.category>
@@ -50,6 +51,12 @@
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-bean-validation</artifactId>
             <version>${wicket.version}</version>
+        </dependency>
+        <!-- joda-time -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda.time.version}</version>
         </dependency>
         <!-- slf4j -->
         <dependency>

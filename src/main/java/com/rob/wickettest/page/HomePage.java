@@ -19,6 +19,7 @@ public class HomePage extends AbstractPage
     private static final String CHART_ID = "chartPageLink";
     private static final String TINYMCE_ID = "tinymcePageLink";
     private static final String RESOURCE_ID = "resourcePageLink";
+    private static final String DATERANGE_ID = "dateRangePageLink";
 
     public HomePage()
     {
@@ -96,6 +97,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(ResourcePage.class);
+            }
+        });
+        add(new Link<Void>(DATERANGE_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(DateRangePage.class);
             }
         });
     }
