@@ -20,6 +20,7 @@ public class HomePage extends AbstractPage
     private static final String TINYMCE_ID = "tinymcePageLink";
     private static final String RESOURCE_ID = "resourcePageLink";
     private static final String DATERANGE_ID = "dateRangePageLink";
+    private static final String COMPLEX_FORMCOMPONENT_ID = "complexFormComponentPageLink";
 
     public HomePage()
     {
@@ -105,6 +106,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(DateRangePage.class);
+            }
+        });
+        add(new Link<Void>(COMPLEX_FORMCOMPONENT_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(ComplexFormComponentPage.class);
             }
         });
     }
