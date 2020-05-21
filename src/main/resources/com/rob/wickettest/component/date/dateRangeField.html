@@ -1,9 +1,23 @@
 <wicket:panel xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
-    <label wicket:for="startDate"></label>
-    <input type="text" wicket:id="startDate"/>
+    <form wicket:id="form">
 
-    <label wicket:for="endDate"></label>
-    <input type="text" wicket:id="endDate"/>
+        <div>
+            <label wicket:for="startDate">
+                <wicket:label></wicket:label>
+            </label>
+            <input type="text" wicket:id="startDate"/>
+            <div wicket:id="startDateFeedback"></div>
+        </div>
+
+        <div>
+            <label wicket:for="endDate">
+                <wicket:label></wicket:label>
+            </label>
+            <input type="text" wicket:id="endDate"/>
+            <div wicket:id="endDateFeedback"></div>
+        </div>
+
+    </form>
 
 </wicket:panel>
