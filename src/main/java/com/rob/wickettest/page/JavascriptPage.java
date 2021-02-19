@@ -8,6 +8,8 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,16 +26,39 @@ public class JavascriptPage extends AbstractPage
     private static final String CUSTOM_BEHAVIOR_LABEL_ID = "customBehaviorLabel";
     private static final String WICKET_FORM_ID = "wicketForm";
     private static final String WICKET_BUTTON_ID = "wicketButton";
+    private static final String HANDLER3_LABEL_ID = "handler3Label";
 
     private final WicketModel wicketModel = new WicketModel();
     private final CustomBehavior customBehavior = new CustomBehavior(this);
 
     private Label customBehaviorLabel;
     private AjaxButton wicketButton;
+    private Label label3;
 
     public JavascriptPage()
     {
         setDefaultModel(new CompoundPropertyModel<>(wicketModel));
+    }
+
+    private final AbstractDefaultAjaxBehavior behavior3 = new AbstractDefaultAjaxBehavior()
+    {
+        @Override
+        protected void respond(AjaxRequestTarget target)
+        {
+            log.debug("Firing behavior 3 on: " + getCallbackUrl());
+
+            handler3Label = new Date().toString();
+            target.add(label3);
+        }
+    };
+
+    @Override
+    public void renderHead(IHeaderResponse response)
+    {
+        super.renderHead(response);
+
+        final String js = "function fire3() { Wicket.Ajax.get({ u: '" + behavior3.getCallbackUrl() + "' }); }";
+        response.render(JavaScriptHeaderItem.forScript(js, "lbl3-cb-" + getId()));
     }
 
     @Override
@@ -72,8 +97,17 @@ public class JavascriptPage extends AbstractPage
         wicketForm.add(wicketButton);
 
         customBehaviorLabel.add(customBehavior);
+
+        // Attempt 3
+
+        add(behavior3);
+
+        label3 = new Label(HANDLER3_LABEL_ID, new PropertyModel<>(this, "handler3Label"));
+        label3.setOutputMarkupId(true);
+        add(label3);
     }
 
+    private String handler3Label;
 
     private static final class WicketModel implements Serializable
     {
@@ -97,7 +131,5 @@ public class JavascriptPage extends AbstractPage
             page.wicketModel.customBehaviorLabel = new Date().toString();
             target.add(page.customBehaviorLabel);
         }
-
-
     }
 }
