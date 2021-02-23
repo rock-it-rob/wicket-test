@@ -24,11 +24,8 @@
         <h1>Upload File</h1>
 
         <div wicket:id="container">
-            <div wicket:id="dzDiv" class="dz-form">
-                <!--
-                <button wicket:id="upload" class="upload-button">Upload Files</button>
-                -->
-            </div>
+            <div wicket:id="dzDiv" class="dz-form"></div>
+            <button class="upload-button" onclick="processDropzoneQueue(event)">Upload Files</button>
         </div>
 
         <a wicket:id="refresh">Refresh Form</a>
