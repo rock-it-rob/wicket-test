@@ -1,5 +1,6 @@
 package com.rob.wickettest.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -29,7 +30,7 @@ public class JavascriptPage extends AbstractPage
     private static final String HANDLER3_LABEL_ID = "handler3Label";
 
     private final WicketModel wicketModel = new WicketModel();
-    private final CustomBehavior customBehavior = new CustomBehavior(this);
+
 
     private Label customBehaviorLabel;
     private AjaxButton wicketButton;
@@ -66,6 +67,18 @@ public class JavascriptPage extends AbstractPage
     {
         super.onInitialize();
 
+        final AbstractDefaultAjaxBehavior customBehavior = new AbstractDefaultAjaxBehavior()
+        {
+            @Override
+            protected void respond(AjaxRequestTarget target)
+            {
+                log.debug("Firing custom behavior on url: " + getCallbackUrl());
+                wicketModel.customBehaviorLabel = new Date().toString();
+                target.add(customBehaviorLabel);
+                setResponsePage(JavascriptPage.class);
+            }
+        };
+
         customBehaviorLabel = new Label(CUSTOM_BEHAVIOR_LABEL_ID)
         {
             @Override
@@ -74,10 +87,13 @@ public class JavascriptPage extends AbstractPage
                 super.renderHead(response);
 
                 // This technique refreshes the whole increasing the page render count. It's expensive and not a good idea.
-                final String js = "function fireCustomBehavior() { window.location.href='" + customBehavior.getCallbackUrl() + "'; }";
-                response.render(JavaScriptHeaderItem.forScript(js, "lbl-cb-" + getId()));
+                //final String js = "function fireCustomBehavior() { window.location.href='" + customBehavior.getCallbackUrl() + "'; }";
+                final String js = "function fireCustomBehavior() { $.get('" + customBehavior.getCallbackUrl() + "'); };";
+                //response.render(JavaScriptHeaderItem.forScript(js, "lbl-cb-" + getId()));
+                response.render(JavaScriptHeaderItem.forScript(js, null));
             }
         };
+        customBehaviorLabel.setOutputMarkupId(true);
         add(customBehaviorLabel);
 
         final Form<Object> wicketForm = new Form<>(WICKET_FORM_ID);
@@ -112,24 +128,5 @@ public class JavascriptPage extends AbstractPage
     private static final class WicketModel implements Serializable
     {
         private String customBehaviorLabel;
-    }
-
-
-    private static final class CustomBehavior extends AbstractDefaultAjaxBehavior
-    {
-        private final JavascriptPage page;
-
-        private CustomBehavior(JavascriptPage page)
-        {
-            this.page = page;
-        }
-
-        @Override
-        protected void respond(AjaxRequestTarget target)
-        {
-            log.debug("Firing custom behavior on url: " + getCallbackUrl());
-            page.wicketModel.customBehaviorLabel = new Date().toString();
-            target.add(page.customBehaviorLabel);
-        }
     }
 }
