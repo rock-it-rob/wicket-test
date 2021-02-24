@@ -75,7 +75,6 @@ public class JavascriptPage extends AbstractPage
                 log.debug("Firing custom behavior on url: " + getCallbackUrl());
                 wicketModel.customBehaviorLabel = new Date().toString();
                 target.add(customBehaviorLabel);
-                setResponsePage(JavascriptPage.class);
             }
         };
 
@@ -86,11 +85,8 @@ public class JavascriptPage extends AbstractPage
             {
                 super.renderHead(response);
 
-                // This technique refreshes the whole increasing the page render count. It's expensive and not a good idea.
-                //final String js = "function fireCustomBehavior() { window.location.href='" + customBehavior.getCallbackUrl() + "'; }";
-                final String js = "function fireCustomBehavior() { $.get('" + customBehavior.getCallbackUrl() + "'); };";
-                //response.render(JavaScriptHeaderItem.forScript(js, "lbl-cb-" + getId()));
-                response.render(JavaScriptHeaderItem.forScript(js, null));
+                final String js = "function fireCustomBehavior() { Wicket.Ajax.get({ u: '" + customBehavior.getCallbackUrl() + "' }); };";
+                response.render(JavaScriptHeaderItem.forScript(js, "lbl-cb-" + getId()));
             }
         };
         customBehaviorLabel.setOutputMarkupId(true);

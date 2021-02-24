@@ -33,6 +33,17 @@
     <p>
         Attempt 3 might be working.
     </p>
+
+    <h1>Update</h1>
+    <p>
+        I have cracked the code. Use the <strong>Wicket.Ajax.ajax</strong> methods for calling from javascript
+        and if that's not possible set the header in ajax requests:
+    </p>
+    <ul>
+        <li><strong>Wicket-Ajax</strong>: "true"</li>
+        <li><strong>Wicket-Ajax-BaseURL</strong>: Wicket.Ajax.baseUrl (this comes from wicket-ajax-jquery.js)</li>
+    </ul>
+
 </wicket:extend>
 
 </html>
