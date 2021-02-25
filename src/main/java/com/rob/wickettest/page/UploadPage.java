@@ -122,10 +122,6 @@ public class UploadPage extends AbstractPage
             {
                 log.info("Received request");
 
-                // This seems to keep wicket from freaking out from not using its Wicket.Ajax.* wrapper for javascript.
-                // TODO: We may not need this once the redirect is in place.
-                //getRequestCycle().scheduleRequestHandlerAfterCurrent(EmptyAjaxRequestHandler.getInstance());
-                //setResponsePage(UploadPage.class);
                 onUpload(target);
                 target.add(container);
             }
