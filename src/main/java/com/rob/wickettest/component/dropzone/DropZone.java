@@ -1,5 +1,6 @@
 package com.rob.wickettest.component.dropzone;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -15,6 +16,10 @@ import org.apache.wicket.util.lang.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
 public class DropZone extends Panel
 {
     private static final Logger log = LoggerFactory.getLogger(DropZone.class);
@@ -25,7 +30,6 @@ public class DropZone extends Panel
     private boolean dzVisible = true;
     private WebMarkupContainer dzDiv;
     private AbstractDefaultAjaxBehavior uploadBehavior;
-    private AbstractDefaultAjaxBehavior queueCompleteBehavior;
 
     public DropZone(String id)
     {
@@ -61,11 +65,10 @@ public class DropZone extends Panel
 
                 // Create the javascript to create a dropzone on this form. Use a null on the header item identifier because we want this to run on each render.
                 final String js = String.format(
-                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', '%s');",
+                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s');",
                         dzDiv.getMarkupId(),
                         getMarkupId(),
-                        uploadBehavior.getCallbackUrl(),
-                        queueCompleteBehavior.getCallbackUrl()
+                        uploadBehavior.getCallbackUrl()
                 );
                 final OnDomReadyHeaderItem headerItem = OnDomReadyHeaderItem.forScript(js);
                 response.render(headerItem);
@@ -136,16 +139,6 @@ public class DropZone extends Panel
             }
         };
         add(uploadBehavior);
-
-        queueCompleteBehavior = new AbstractDefaultAjaxBehavior()
-        {
-            @Override
-            protected void respond(AjaxRequestTarget target)
-            {
-                onQueueComplete(target);
-            }
-        };
-        add(queueCompleteBehavior);
     }
 
     private void onUpload(AjaxRequestTarget target)
@@ -155,24 +148,44 @@ public class DropZone extends Panel
         {
             final MultipartServletWebRequest multipartServletWebRequest = servletWebRequest.newMultipartWebRequest(Bytes.bytes(MAX_BYTES), "unused");
             multipartServletWebRequest.parseFileParts();
-            multipartServletWebRequest.getFiles()
-                    .forEach((k, v) -> {
-                        log.info("Files in: " + k);
-                        v.forEach(fi -> log.info(fi.getName()));
-                    });
+            for (Map.Entry<String, List<FileItem>> me : multipartServletWebRequest.getFiles().entrySet())
+            {
+                log.info("Files in: " + me.getKey());
 
-            // Testing. Send back an error.
-
+                for (FileItem fi : me.getValue())
+                {
+                    processFile(fi);
+                }
+            }
         }
         catch (FileUploadException e)
         {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
+        catch (Exception e)
+        {
+            final HttpServletResponse httpServletResponse = (HttpServletResponse) getResponse().getContainerResponse();
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            /*
+            try
+            {
+                httpServletResponse.setContentType("text/plain");
+                httpServletResponse.getWriter().print(e.getMessage());
+                httpServletResponse.getWriter().close();
+            }
+            catch (IOException iox)
+            {
+                throw new RuntimeException(iox);
+            }
+             */
+        }
     }
 
-    private void onQueueComplete(AjaxRequestTarget target)
+    private void processFile(FileItem fileItem) throws Exception
     {
-        log.info("Queue complete");
+        log.info(fileItem.getName());
+
+        //if (1 == 1) throw new Exception("no uploads for you");
     }
 }

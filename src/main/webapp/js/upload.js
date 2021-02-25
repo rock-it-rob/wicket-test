@@ -1,5 +1,5 @@
 // Creates a dropzone on the given element and places its hidden input on the containerElement.
-function createDropzone(element, containerElement, url, doneUrl) {
+function createDropzone(element, containerElement, url) {
 
     try {
         new Dropzone(element, {
@@ -17,21 +17,13 @@ function createDropzone(element, containerElement, url, doneUrl) {
             init: function () {
                 // Save the wicket response from a file upload event. This may get called multiple times in a single upload depending on the number of files. Only save the last response.
                 this.on("success", function (file, response) {
-                    //this.wicketResponse = response;
-                    Wicket.Ajax.process(response);
+                    this.wicketResponse = response;
                 });
-                /*
                 // Use the special wicket junk to interpret the saved response. If this isn't processed through the wicket jquery helper it won't render correctly.
                 this.on("queuecomplete", function () {
                     Wicket.Ajax.process(this.wicketResponse);
                 });
-                */
-               // Call the wicket handler on complete.
-               this.on("queuecomplete", function() {
-                   Wicket.Ajax.get({u: doneUrl});
-               })
             }
-
         });
         console.log('dropzone created on: ' + element.id);
     }
