@@ -18,21 +18,38 @@ function createDropzone(element, containerElement, url, maxFiles) {
             // Don't automatically upload files; just queue them.
             autoProcessQueue: false,
             init: function () {
-                // Save the wicket response from a file upload event. This may get called multiple times in a single upload depending on the number of files. Only save the last response.
+
+                this.on('sendingmultiple', function (files) {
+                    //
+                    // Do clickblocker stuff here.
+                    //
+                });
+
+                // On success process the wicket response.
                 this.on("successmultiple", function (file, response) {
-                    //this.wicketResponse = response;
                     Wicket.Ajax.process(response);
                 });
-                this.on("errormultiple", function(file, msg, xhr) {
-                    $(element).find('.dz-error-message').text('');
-                    toastr.error('Unable to upload file(s)');
+
+                // On error process the wicket response if the error came from the server.
+                // Dropzone will set the request object in this case. If there is no server 
+                // error then just console the error and let dropzone display it on its preview.
+                this.on("errormultiple", function (file, msg, xhr) {
+                    if (xhr != null) {
+                        Wicket.Ajax.process(msg);
+                    }
+                    else {
+                        console.error(msg);
+                    }
                 });
-                /*
-                // Use the special wicket junk to interpret the saved response. If this isn't processed through the wicket jquery helper it won't render correctly.
+
+                // Once the upload process is finished, remove any files.
                 this.on("queuecomplete", function () {
-                    Wicket.Ajax.process(this.wicketResponse);
+                    this.removeAllFiles();
+
+                    //
+                    // Hide clickblocker here
+                    //
                 });
-                */
             }
         });
         console.log('dropzone created on: ' + element.id);
@@ -46,5 +63,9 @@ function createDropzone(element, containerElement, url, maxFiles) {
 // Process the queue on the dropzone at the given element.
 function processDropzoneQueue(event) {
     var element = $(event.target).parent().children('.dz-form').get(0);
-    Dropzone.forElement(element).processQueue();
+    var dz = Dropzone.forElement(element);
+
+    if (dz.getRejectedFiles().length == 0) {
+        dz.processQueue();
+    }
 }
