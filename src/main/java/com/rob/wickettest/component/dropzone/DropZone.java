@@ -25,7 +25,8 @@ public class DropZone extends Panel
     private static final Logger log = LoggerFactory.getLogger(DropZone.class);
 
     private static final String UPLOAD_JS = "js/upload.js";
-    private static final int MAX_BYTES = 1024 * 10; // 10 MB
+    private static final int MAX_MB = 40;
+    private static final int MAX_FILES = 3;
 
     private boolean dzVisible = true;
     private WebMarkupContainer dzDiv;
@@ -65,10 +66,11 @@ public class DropZone extends Panel
 
                 // Create the javascript to create a dropzone on this form. Use a null on the header item identifier because we want this to run on each render.
                 final String js = String.format(
-                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s');",
+                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', %d);",
                         dzDiv.getMarkupId(),
                         getMarkupId(),
-                        uploadBehavior.getCallbackUrl()
+                        uploadBehavior.getCallbackUrl(),
+                        MAX_FILES
                 );
                 final OnDomReadyHeaderItem headerItem = OnDomReadyHeaderItem.forScript(js);
                 response.render(headerItem);
@@ -146,7 +148,7 @@ public class DropZone extends Panel
         final ServletWebRequest servletWebRequest = (ServletWebRequest) getRequest();
         try
         {
-            final MultipartServletWebRequest multipartServletWebRequest = servletWebRequest.newMultipartWebRequest(Bytes.bytes(MAX_BYTES), "unused");
+            final MultipartServletWebRequest multipartServletWebRequest = servletWebRequest.newMultipartWebRequest(Bytes.megabytes(MAX_MB), "unused");
             multipartServletWebRequest.parseFileParts();
             for (Map.Entry<String, List<FileItem>> me : multipartServletWebRequest.getFiles().entrySet())
             {
@@ -157,6 +159,7 @@ public class DropZone extends Panel
                     processFile(fi);
                 }
             }
+            done();
         }
         catch (FileUploadException e)
         {
@@ -186,6 +189,11 @@ public class DropZone extends Panel
     {
         log.info(fileItem.getName());
 
-        //if (1 == 1) throw new Exception("no uploads for you");
+        if (1 == 1) throw new Exception("no uploads for you");
+    }
+
+    private void done()
+    {
+        log.info("Processed all files successfully");
     }
 }
