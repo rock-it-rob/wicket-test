@@ -4,7 +4,9 @@ package com.rob.wickettest.page;
 import com.rob.wickettest.component.mce.MceField;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
@@ -28,13 +30,18 @@ public class TinyMcePage extends AbstractPage
         enteredLabel.setOutputMarkupId(true);
         add(enteredLabel);
 
+        final Form<Void> form = new Form<>("form");
+        add(form);
+
         mceField = new MceField("mceText", new PropertyModel<>(this, "mceText"))
         {
+            /*
             @Override
             protected void onSave(AjaxRequestTarget target)
             {
                 target.add(enteredLabel);
             }
+             */
 
             @Override
             protected void validateMceContent(String content) throws Exception
@@ -47,7 +54,20 @@ public class TinyMcePage extends AbstractPage
         };
         mceField.setOutputMarkupId(true);
         mceField.setOutputMarkupPlaceholderTag(true);
-        add(mceField);
+        form.add(mceField);
+
+        final AjaxButton saveLink = new AjaxButton("saveLink")
+        {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+            {
+                super.onSubmit(target, form);
+
+                log.info("Saving");
+                target.add(enteredLabel);
+            }
+        };
+        form.add(saveLink);
 
         final AjaxLink<Void> toggleLink = new AjaxLink<Void>("toggle")
         {

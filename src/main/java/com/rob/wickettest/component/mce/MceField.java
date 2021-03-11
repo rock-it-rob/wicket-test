@@ -4,13 +4,19 @@ import com.rob.wickettest.page.AbstractPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.IRequestParameters;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +81,26 @@ public class MceField extends Panel
         mceHolder.setOutputMarkupId(true);
         editContainer.add(mceHolder);
 
-        final AjaxLink<Void> saveLink = new AjaxLink<Void>("saveLink")
+        final TextArea<String> rawTextArea = new TextArea<>("rawText", model);
+        rawTextArea.add(new IValidator<String>()
+        {
+            @Override
+            public void validate(IValidatable<String> validatable)
+            {
+                try
+                {
+                    validateMceContent(validatable.getValue());
+                }
+                catch (Exception e)
+                {
+                    validatable.error(new ValidationError(e.getMessage()));
+                }
+            }
+        });
+        mceHolder.add(rawTextArea);
+
+        /*
+        final AjaxButton saveLink = new AjaxButton("saveLink")
         {
             @Override
             protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
@@ -106,6 +131,9 @@ public class MceField extends Panel
         };
 
         editContainer.add(saveLink);
+        */
+
+
 
         // Read only contents
 
@@ -132,8 +160,10 @@ public class MceField extends Panel
         // override
     }
 
+    /*
     protected void onSave(AjaxRequestTarget target)
     {
         // override
     }
+     */
 }
