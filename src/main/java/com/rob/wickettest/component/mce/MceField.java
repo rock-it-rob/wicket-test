@@ -3,17 +3,13 @@ package com.rob.wickettest.component.mce;
 import com.rob.wickettest.page.AbstractPage;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.IRequestParameters;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.IValidator;
-import org.apache.wicket.validation.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +47,7 @@ public class MceField extends Panel
         mceHolder.setOutputMarkupId(true);
         add(mceHolder);
 
-        final AjaxButton saveButton = new AjaxButton("saveButton")
+        final AjaxLink<Void> saveLink = new AjaxLink<Void>("saveLink")
         {
             @Override
             protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
@@ -61,26 +57,7 @@ public class MceField extends Panel
             }
 
             @Override
-            protected void onError(AjaxRequestTarget target, Form<?> form)
-            {
-                super.onError(target, form);
-                target.add(((AbstractPage) getPage()).getFeedbackPanel());
-            }
-
-            @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
-            {
-                final IRequestParameters params = getRequest().getRequestParameters();
-                final String mceContent = params.getParameterValue(MCE_CONTENT_DEP).toString();
-                model.setObject(mceContent);
-                onSave(target);
-            }
-        };
-
-        saveButton.add(new IValidator<String>()
-        {
-            @Override
-            public void validate(IValidatable<String> validatable)
+            public void onClick(AjaxRequestTarget target)
             {
                 final IRequestParameters params = getRequest().getRequestParameters();
                 final String mceContent = params.getParameterValue(MCE_CONTENT_DEP).toString();
@@ -88,16 +65,19 @@ public class MceField extends Panel
                 try
                 {
                     validateMceContent(mceContent);
+                    model.setObject(mceContent);
+                    onSave(target);
                 }
                 catch (Exception e)
                 {
                     log.error("Rejecting value: " + mceContent);
-                    validatable.error(new ValidationError(e.getMessage()));
+                    MceField.this.error(e.getMessage());
+                    target.add(((AbstractPage) getPage()).getFeedbackPanel());
                 }
             }
-        });
+        };
 
-        add(saveButton);
+        add(saveLink);
     }
 
     // Can override

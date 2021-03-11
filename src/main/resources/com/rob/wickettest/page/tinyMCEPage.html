@@ -3,48 +3,12 @@
 
     <wicket:head>
         <script src="js/tiny_mce/tiny_mce.js"></script>
-
-        <style>
-            .mce-holder {
-                margin: 20px auto;
-                max-width: 50%;
-            }
-
-            .saved-content {
-                margin: 20px auto;
-                max-width: 50%;
-            }
-
-            .save-button {
-                border: 1px solid #069;
-                background-color: #28b;
-                color: #fff;
-                padding: 4px;
-            }
-        </style>
     </wicket:head>
 
-    <form wicket:id="form">
-        <div class='mce-holder'>
-            <textarea wicket:id="mce"></textarea>
-        </div>
-        <input type="hidden" wicket:id="buffer" />
-        <button class="save-button" wicket:id="saveButton">Save</button>
-    </form>
+    <div wicket:id='mceText'></div>
 
-    <pre class="saved-content" wicket:id="savedContent"></pre>
-
-    <script>
-        $(document).ready(function () {
-            tinymce.init({
-                mode: 'exact',
-                elements: 'mce'
-            })
-        });
-
-        function sendMceText() {
-            tinymce.get('mce').getContent();
-        }
-    </script>
+    <div>
+        <span wicket:id='enteredText'></span>
+    </div>
 
 </wicket:extend>
