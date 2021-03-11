@@ -3,6 +3,7 @@ package com.rob.wickettest.page;
 
 import com.rob.wickettest.component.mce.MceField;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
@@ -47,5 +48,16 @@ public class TinyMcePage extends AbstractPage
         mceField.setOutputMarkupId(true);
         mceField.setOutputMarkupPlaceholderTag(true);
         add(mceField);
+
+        final AjaxLink<Void> toggleLink = new AjaxLink<Void>("toggle")
+        {
+            @Override
+            public void onClick(AjaxRequestTarget target)
+            {
+                mceField.setEditMode(!mceField.getEditMode());
+                target.add(mceField);
+            }
+        };
+        add(toggleLink);
     }
 }

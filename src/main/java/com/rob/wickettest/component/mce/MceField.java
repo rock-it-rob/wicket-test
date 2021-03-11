@@ -7,8 +7,10 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.IRequestParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,22 @@ public class MceField extends Panel
     private final WebMarkupContainer mceHolder = new WebMarkupContainer("mceHolder");
     private final IModel<String> model;
 
+    private boolean editMode = true;
+
     public MceField(String id, IModel<String> model)
     {
         super(id);
         this.model = model;
+    }
+
+    public boolean getEditMode()
+    {
+        return editMode;
+    }
+
+    public void setEditMode(boolean editMode)
+    {
+        this.editMode = editMode;
     }
 
     @Override
@@ -44,8 +58,23 @@ public class MceField extends Panel
     {
         super.onInitialize();
 
+        // Edit contents
+
+        final WebMarkupContainer editContainer = new WebMarkupContainer("editContainer")
+        {
+            @Override
+            protected void onConfigure()
+            {
+                super.onConfigure();
+                setVisible(editMode);
+            }
+        };
+        editContainer.setOutputMarkupId(true);
+        editContainer.setOutputMarkupPlaceholderTag(true);
+        add(editContainer);
+
         mceHolder.setOutputMarkupId(true);
-        add(mceHolder);
+        editContainer.add(mceHolder);
 
         final AjaxLink<Void> saveLink = new AjaxLink<Void>("saveLink")
         {
@@ -77,7 +106,26 @@ public class MceField extends Panel
             }
         };
 
-        add(saveLink);
+        editContainer.add(saveLink);
+
+        // Read only contents
+
+        final WebMarkupContainer viewContainer = new WebMarkupContainer("viewContainer")
+        {
+            @Override
+            protected void onConfigure()
+            {
+                super.onConfigure();
+                setVisible(!editMode);
+            }
+        };
+        viewContainer.setOutputMarkupId(true);
+        viewContainer.setOutputMarkupPlaceholderTag(true);
+        add(viewContainer);
+
+        final Label readOnlyContent = new Label("readOnlyContent", model);
+        readOnlyContent.setEscapeModelStrings(false);
+        viewContainer.add(readOnlyContent);
     }
 
     // Can override
