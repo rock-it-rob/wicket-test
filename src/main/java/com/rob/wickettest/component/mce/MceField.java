@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.IRequestParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,7 +127,6 @@ public class MceField extends Panel
         viewContainer.add(readOnlyContent);
     }
 
-    // Can override
     protected void validateMceContent(String content) throws Exception
     {
         // override
