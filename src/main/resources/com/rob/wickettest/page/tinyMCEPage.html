@@ -1,21 +1,50 @@
-<!doctype html>
+<wicket:extend xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+    <wicket:head>
+        <script src="js/tiny_mce/tiny_mce.js"></script>
 
-<wicket:extend>
+        <style>
+            .mce-holder {
+                margin: 20px auto;
+                max-width: 50%;
+            }
 
-    <textarea wicket:id="textarea"></textarea>
-    <label wicket:id="label"></label>
+            .saved-content {
+                margin: 20px auto;
+                max-width: 50%;
+            }
+
+            .save-button {
+                border: 1px solid #069;
+                background-color: #28b;
+                color: #fff;
+                padding: 4px;
+            }
+        </style>
+    </wicket:head>
+
+    <form wicket:id="form">
+        <div class='mce-holder'>
+            <textarea wicket:id="mce"></textarea>
+        </div>
+        <input type="hidden" wicket:id="buffer" />
+        <button class="save-button" wicket:id="saveButton">Save</button>
+    </form>
+
+    <pre class="saved-content" wicket:id="savedContent"></pre>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             tinymce.init({
-                mode: 'textareas'
+                mode: 'exact',
+                elements: 'mce'
             })
         });
+
+        function sendMceText() {
+            tinymce.get('mce').getContent();
+        }
     </script>
 
 </wicket:extend>
-
-</html>

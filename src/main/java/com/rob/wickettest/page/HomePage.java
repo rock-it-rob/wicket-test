@@ -90,7 +90,7 @@ public class HomePage extends AbstractPage
             @Override
             public void onClick()
             {
-                setResponsePage(TinyMCEPage.class);
+                setResponsePage(TinyMcePage.class);
             }
         });
         add(new Link<Void>(RESOURCE_ID)
