@@ -1,14 +1,32 @@
+<wicket:head>
+      <style>
+            .tiny-link {
+                  background-color: #499;
+                  border: 1px solid #277;
+                  color: #fff;
+                  padding: 8px;
+                  margin: 20px auto;
+            }
+      </style>
+</wicket:head>
+
 <wicket:panel xmlns="http://www.w3.org/1999/xhtml"
       xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
 
       <div wicket:id='editContainer'>
-            <div wicket:id='mceHolder' style='margin: 20px auto;max-width: 50%; padding: 10px; border: 2px solid #ccc;'>
+            <div style='margin: 20px auto;max-width: 50%; padding: 10px; border: 2px solid #ccc;'>
                   <textarea wicket:id="rawText"></textarea>
+            </div>
+            <div>
+                  <a class='tiny-link' wicket:id='saveLink'>Save</a>
             </div>
       </div>
 
       <div wicket:id='viewContainer'>
             <div wicket:id='readOnlyContent'></div>
+            <div>
+                  <a class='tiny-link' wicket:id='editLink'>Edit</a>
+            </div>
       </div>
 
 </wicket:panel>

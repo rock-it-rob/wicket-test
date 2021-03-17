@@ -1,19 +1,17 @@
 package com.rob.wickettest.component.mce;
 
-import com.rob.wickettest.page.AbstractPage;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.IRequestParameters;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
@@ -26,8 +24,10 @@ public class MceField extends Panel
 
     private static final String MCE_CONTENT_DEP = "mceContent";
 
-    private final WebMarkupContainer mceHolder = new WebMarkupContainer("mceHolder");
     private final IModel<String> model;
+
+    private TextArea<String> rawTextArea;
+    private WebMarkupContainer viewContainer;
 
     private boolean editMode = true;
 
@@ -53,7 +53,7 @@ public class MceField extends Panel
         super.renderHead(response);
 
         // Initialize the MCE.
-        final String initMce = String.format("tinymce.init({ mode: 'specific_textareas', selector: '#%s textarea' });", mceHolder.getMarkupId());
+        final String initMce = String.format("tinymce.init({ mode: 'exact', elements: '%s' });", rawTextArea.getMarkupId());
         final OnDomReadyHeaderItem headerInit = OnDomReadyHeaderItem.forScript(initMce);
         response.render(headerInit);
     }
@@ -78,10 +78,7 @@ public class MceField extends Panel
         editContainer.setOutputMarkupPlaceholderTag(true);
         add(editContainer);
 
-        mceHolder.setOutputMarkupId(true);
-        editContainer.add(mceHolder);
-
-        final TextArea<String> rawTextArea = new TextArea<>("rawText", model);
+        rawTextArea = new TextArea<>("rawText", model);
         rawTextArea.add(new IValidator<String>()
         {
             @Override
@@ -97,11 +94,45 @@ public class MceField extends Panel
                 }
             }
         });
-        mceHolder.add(rawTextArea);
+        rawTextArea.setOutputMarkupId(true);
+        rawTextArea.setOutputMarkupPlaceholderTag(true);
+        editContainer.add(rawTextArea);
 
-        /*
-        final AjaxButton saveLink = new AjaxButton("saveLink")
+        final AjaxCallListener saveMceListener = new AjaxCallListener()
         {
+            @Override
+            public CharSequence getInitHandler(Component component)
+            {
+                return String.format("tinymce.get('%s').save();", rawTextArea.getMarkupId());
+            }
+        };
+
+        final AjaxLink<Void> saveLink = new AjaxLink<Void>("saveLink")
+        {
+            @Override
+            protected void onConfigure()
+            {
+                super.onConfigure();
+                setVisible(editMode);
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
+            {
+                super.updateAjaxAttributes(attributes);
+
+                // Add listener to execute save on the tinymce object.
+                attributes.getAjaxCallListeners().add(saveMceListener);
+            }
+
+            @Override
+            public void onClick(AjaxRequestTarget target)
+            {
+                editMode = false;
+                target.add(MceField.this);
+            }
+
+            /*
             @Override
             protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
             {
@@ -128,16 +159,16 @@ public class MceField extends Panel
                     target.add(((AbstractPage) getPage()).getFeedbackPanel());
                 }
             }
+             */
         };
-
         editContainer.add(saveLink);
-        */
+
 
 
 
         // Read only contents
 
-        final WebMarkupContainer viewContainer = new WebMarkupContainer("viewContainer")
+        viewContainer = new WebMarkupContainer("viewContainer")
         {
             @Override
             protected void onConfigure()
@@ -153,6 +184,24 @@ public class MceField extends Panel
         final Label readOnlyContent = new Label("readOnlyContent", model);
         readOnlyContent.setEscapeModelStrings(false);
         viewContainer.add(readOnlyContent);
+
+        final AjaxLink<Void> editLink = new AjaxLink<Void>("editLink")
+        {
+            @Override
+            protected void onConfigure()
+            {
+                super.onConfigure();
+                setVisible(!editMode);
+            }
+
+            @Override
+            public void onClick(AjaxRequestTarget target)
+            {
+                target.add(MceField.this);
+                editMode = true;
+            }
+        };
+        viewContainer.add(editLink);
     }
 
     protected void validateMceContent(String content) throws Exception

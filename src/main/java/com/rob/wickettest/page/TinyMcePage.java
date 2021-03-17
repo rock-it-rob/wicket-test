@@ -56,7 +56,7 @@ public class TinyMcePage extends AbstractPage
         mceField.setOutputMarkupPlaceholderTag(true);
         form.add(mceField);
 
-        final AjaxButton saveLink = new AjaxButton("saveLink")
+        final AjaxButton saveButton = new AjaxButton("saveButton")
         {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
@@ -67,7 +67,7 @@ public class TinyMcePage extends AbstractPage
                 target.add(enteredLabel);
             }
         };
-        form.add(saveLink);
+        form.add(saveButton);
 
         final AjaxLink<Void> toggleLink = new AjaxLink<Void>("toggle")
         {

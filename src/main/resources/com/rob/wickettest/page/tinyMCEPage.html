@@ -5,7 +5,10 @@
         <script src="js/tiny_mce/tiny_mce.js"></script>
     </wicket:head>
 
-    <div wicket:id='mceText'></div>
+    <form wicket:id='form'>
+        <div wicket:id='mceText'></div>
+        <button wicket:id='saveButton'>Submit</button>
+    </form>
 
     <div>
         <span wicket:id='enteredText'></span>
