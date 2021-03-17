@@ -10,6 +10,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.ValidationException;
+
 public class TinyMcePage extends AbstractPage
 {
     private static final Logger log = LoggerFactory.getLogger(TinyMcePage.class);
@@ -37,11 +39,11 @@ public class TinyMcePage extends AbstractPage
             }
 
             @Override
-            protected void validateMceContent(String content) throws Exception
+            protected void validateMceContent(String content) throws ValidationException
             {
                 if (content != null && content.equalsIgnoreCase("<p>reject</p>"))
                 {
-                    throw new Exception("Content not accepted");
+                    throw new ValidationException("Content not accepted");
                 }
             }
         };

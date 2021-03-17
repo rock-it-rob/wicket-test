@@ -12,8 +12,11 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.IRequestParameters;
+import org.apache.wicket.validation.ValidationError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.validation.ValidationException;
 
 public class MceField extends Panel
 {
@@ -23,6 +26,7 @@ public class MceField extends Panel
 
     private final IModel<String> model;
 
+    private  WebMarkupContainer viewContainer;
     private TextArea<String> rawText;
     private boolean editMode = true;
 
@@ -42,16 +46,7 @@ public class MceField extends Panel
         this.editMode = editMode;
     }
 
-    @Override
-    public void renderHead(IHeaderResponse response)
-    {
-        super.renderHead(response);
 
-        // Initialize the MCE.
-        final String initMce = String.format("tinymce.init({ mode: 'exact', elements: '%s' });", rawText.getMarkupId());
-        final OnDomReadyHeaderItem headerInit = OnDomReadyHeaderItem.forScript(initMce);
-        response.render(headerInit);
-    }
 
     @Override
     protected void onInitialize()
@@ -62,6 +57,17 @@ public class MceField extends Panel
 
         final WebMarkupContainer editContainer = new WebMarkupContainer("editContainer")
         {
+            @Override
+            public void renderHead(IHeaderResponse response)
+            {
+                super.renderHead(response);
+
+                // Initialize the MCE.
+                final String initMce = String.format("tinymce.init({ mode: 'exact', elements: '%s' });", rawText.getMarkupId());
+                final OnDomReadyHeaderItem headerInit = OnDomReadyHeaderItem.forScript(initMce);
+                response.render(headerInit);
+            }
+
             @Override
             protected void onConfigure()
             {
@@ -75,6 +81,8 @@ public class MceField extends Panel
 
         // Create the textare which serves as the starting point for creating a tinymce object and contains the initial string value.
         rawText = new TextArea<>("rawText", model);
+        rawText.setOutputMarkupId(true);
+        rawText.setOutputMarkupPlaceholderTag(true);
         editContainer.add(rawText);
 
         final AjaxLink<Void> saveLink = new AjaxLink<Void>("saveLink")
@@ -97,8 +105,11 @@ public class MceField extends Panel
                     validateMceContent(mceContent);
                     model.setObject(mceContent);
                     onSave(target);
+                    editMode = false;
+                    target.add(viewContainer);
+                    target.add(editContainer);
                 }
-                catch (Exception e)
+                catch (ValidationException e)
                 {
                     log.error("Rejecting value: " + mceContent);
                     MceField.this.error(e.getMessage());
@@ -111,7 +122,7 @@ public class MceField extends Panel
 
         // Read only contents
 
-        final WebMarkupContainer viewContainer = new WebMarkupContainer("viewContainer")
+        viewContainer = new WebMarkupContainer("viewContainer")
         {
             @Override
             protected void onConfigure()
@@ -127,9 +138,21 @@ public class MceField extends Panel
         final Label readOnlyContent = new Label("readOnlyContent", model);
         readOnlyContent.setEscapeModelStrings(false);
         viewContainer.add(readOnlyContent);
+
+        final AjaxLink<Void> editLink = new AjaxLink<Void>("editLink")
+        {
+            @Override
+            public void onClick(AjaxRequestTarget target)
+            {
+                editMode = true;
+                target.add(editContainer);
+                target.add(viewContainer);
+            }
+        };
+        viewContainer.add(editLink);
     }
 
-    protected void validateMceContent(String content) throws Exception
+    protected void validateMceContent(String content) throws ValidationException
     {
         // override
     }
