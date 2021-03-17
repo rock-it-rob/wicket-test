@@ -14,7 +14,7 @@ public class TinyMcePage extends AbstractPage
 {
     private static final Logger log = LoggerFactory.getLogger(TinyMcePage.class);
 
-    private String mceText;
+    private String mceText = "<p>begin</p>";
     private MceField mceField;
 
     @Override

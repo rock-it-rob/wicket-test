@@ -8,6 +8,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.IRequestParameters;
@@ -20,9 +21,9 @@ public class MceField extends Panel
 
     private static final String MCE_CONTENT_DEP = "mceContent";
 
-    private final WebMarkupContainer mceHolder = new WebMarkupContainer("mceHolder");
     private final IModel<String> model;
 
+    private TextArea<String> rawText;
     private boolean editMode = true;
 
     public MceField(String id, IModel<String> model)
@@ -47,7 +48,7 @@ public class MceField extends Panel
         super.renderHead(response);
 
         // Initialize the MCE.
-        final String initMce = String.format("tinymce.init({ mode: 'specific_textareas', selector: '#%s textarea' });", mceHolder.getMarkupId());
+        final String initMce = String.format("tinymce.init({ mode: 'exact', elements: '%s' });", rawText.getMarkupId());
         final OnDomReadyHeaderItem headerInit = OnDomReadyHeaderItem.forScript(initMce);
         response.render(headerInit);
     }
@@ -72,8 +73,9 @@ public class MceField extends Panel
         editContainer.setOutputMarkupPlaceholderTag(true);
         add(editContainer);
 
-        mceHolder.setOutputMarkupId(true);
-        editContainer.add(mceHolder);
+        // Create the textare which serves as the starting point for creating a tinymce object and contains the initial string value.
+        rawText = new TextArea<>("rawText", model);
+        editContainer.add(rawText);
 
         final AjaxLink<Void> saveLink = new AjaxLink<Void>("saveLink")
         {
@@ -81,7 +83,7 @@ public class MceField extends Panel
             protected void updateAjaxAttributes(AjaxRequestAttributes attributes)
             {
                 super.updateAjaxAttributes(attributes);
-                attributes.getDynamicExtraParameters().add(String.format("return { '%s': tinymce.get($('#%s').find('textarea')[0].id).getContent() }", MCE_CONTENT_DEP, mceHolder.getMarkupId()));
+                attributes.getDynamicExtraParameters().add(String.format("return { '%s': tinymce.get('%s').getContent() }", MCE_CONTENT_DEP, rawText.getMarkupId()));
             }
 
             @Override
