@@ -10,6 +10,8 @@ function createDropzone(element, containerElement, url, maxFiles) {
             hiddenInputContainer: containerElement,
             // Wicket ajax behavior callback url.
             url: url,
+            // Turn off the timeout for ajax requests. This matches wicket's default.
+            timeout: 0,
             // These are necessary to get wicket to send back a valid response.
             headers: {
                 'Wicket-Ajax': 'true',
