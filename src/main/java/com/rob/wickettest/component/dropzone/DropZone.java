@@ -3,13 +3,20 @@ package com.rob.wickettest.component.dropzone;
 import com.rob.wickettest.page.AbstractPage;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.http.servlet.MultipartServletWebRequest;
@@ -20,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +45,9 @@ public class DropZone extends Panel
     private Label uploadMsgLabel;
     private String uploadMsg;
 
+    @NotNull
+    private String sampleText;
+
     public DropZone(String id)
     {
         super(id);
@@ -48,7 +59,13 @@ public class DropZone extends Panel
         super.onInitialize();
 
         //
-        // Container holding the form.
+        // Form holder the dropzone.
+        //
+        final Form<Void> form = new Form<>("form");
+        add(form);
+
+        //
+        // Container holding the dropzone.
         //
         final WebMarkupContainer container = new WebMarkupContainer("container")
         {
@@ -69,7 +86,7 @@ public class DropZone extends Panel
                 final JavaScriptReferenceHeaderItem referenceHeaderItem = JavaScriptReferenceHeaderItem.forReference(resourceReference);
                 response.render(referenceHeaderItem);
 
-                // Create the javascript to create a dropzone on this form. Use a null on the header item identifier because we want this to run on each render.
+                // Create the javascript to create a dropzone.
                 final String js = String.format(
                         "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', %d);",
                         dzDiv.getMarkupId(),
@@ -83,10 +100,10 @@ public class DropZone extends Panel
         };
         container.setOutputMarkupId(true);
         container.setOutputMarkupPlaceholderTag(true);
-        add(container);
+        form.add(container);
 
         //
-        // Form that is the dropzone
+        // Container that is the dropzone
         //
 
         dzDiv = new WebMarkupContainer("dzDiv");
@@ -99,6 +116,32 @@ public class DropZone extends Panel
         uploadMsgLabel = new Label("uploadMsg", new PropertyModel<>(this, "uploadMsg"));
         uploadMsgLabel.setOutputMarkupId(true);
         add(uploadMsgLabel);
+
+        //
+        // Simple text entry widget for validation
+        //
+        final TextField<String> sampleTextInput = new TextField<>("sampleTextInput", new PropertyModel<>(this, "sampleText"));
+        sampleTextInput.add(new PropertyValidator<>());
+        form.add(sampleTextInput);
+
+        //
+        // Button that will submit the form and then trigger the upload.
+        //
+        final AjaxButton uploadButton = new AjaxButton("uploadButton")
+        {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
+            {
+                target.appendJavaScript(String.format("submitDropzoneRequest('%s');", dzDiv.getMarkupId()));
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form)
+            {
+                target.add(((AbstractPage) getPage()).getFeedbackPanel());
+            }
+        };
+        form.add(uploadButton);
 
         //
         // Behaviors

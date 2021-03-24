@@ -64,8 +64,16 @@ function createDropzone(element, containerElement, url, maxFiles) {
 
 // Process the queue on the dropzone at the given element.
 function processDropzoneQueue(event) {
-    var element = $(event.target).parent().children('.dz-form').get(0);
+    var element = $(event.target).parent().children('.dz-item').get(0);
     var dz = Dropzone.forElement(element);
+
+    if (dz.getRejectedFiles().length == 0) {
+        dz.processQueue();
+    }
+}
+
+function submitDropzoneRequest(id) {
+    var dz = Dropzone.forElement(document.getElementById(id));
 
     if (dz.getRejectedFiles().length == 0) {
         dz.processQueue();
