@@ -59,12 +59,6 @@ public class DropZone extends Panel
         super.onInitialize();
 
         //
-        // Form holder the dropzone.
-        //
-        final Form<Void> form = new Form<>("form");
-        add(form);
-
-        //
         // Container holding the dropzone.
         //
         final WebMarkupContainer container = new WebMarkupContainer("container")
@@ -100,7 +94,7 @@ public class DropZone extends Panel
         };
         container.setOutputMarkupId(true);
         container.setOutputMarkupPlaceholderTag(true);
-        form.add(container);
+        add(container);
 
         //
         // Container that is the dropzone
@@ -122,7 +116,7 @@ public class DropZone extends Panel
         //
         final TextField<String> sampleTextInput = new TextField<>("sampleTextInput", new PropertyModel<>(this, "sampleText"));
         sampleTextInput.add(new PropertyValidator<>());
-        form.add(sampleTextInput);
+        add(sampleTextInput);
 
         //
         // Button that will submit the form and then trigger the upload.
@@ -132,7 +126,7 @@ public class DropZone extends Panel
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form)
             {
-                target.appendJavaScript(String.format("submitDropzoneRequest('%s');", dzDiv.getMarkupId()));
+                target.appendJavaScript(String.format("processDropzoneQueue('%s');", dzDiv.getMarkupId()));
             }
 
             @Override
@@ -141,7 +135,7 @@ public class DropZone extends Panel
                 target.add(((AbstractPage) getPage()).getFeedbackPanel());
             }
         };
-        form.add(uploadButton);
+        add(uploadButton);
 
         //
         // Behaviors

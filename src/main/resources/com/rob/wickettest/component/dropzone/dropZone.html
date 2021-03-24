@@ -1,18 +1,11 @@
 <wicket:panel xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
-    <form wicket:id='form'>
+    <div wicket:id="container">
+        <div wicket:id="dzDiv" class="dz-item"></div>
+    </div>
 
-        <div wicket:id="container">
-            <div wicket:id="dzDiv" class="dz-item"></div>
-            <!--
-        <button class="upload-button" onclick="processDropzoneQueue(event)">Upload Files</button>
-        -->
-        </div>
-
-        <input type='text' wicket:id='sampleTextInput' placeholder='Not Empty' />
-        <button wicket:id='uploadButton' class='upload-button'>Upload Files</button>
-
-    </form>
+    <input type='text' wicket:id='sampleTextInput' placeholder='Not Empty' />
+    <button wicket:id='uploadButton' class='upload-button'>Upload Files</button>
 
     <div wicket:id="uploadMsg"></div>
 
