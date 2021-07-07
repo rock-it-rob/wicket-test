@@ -22,6 +22,7 @@ public class HomePage extends AbstractPage
     private static final String DATERANGE_ID = "dateRangePageLink";
     private static final String COMPLEX_FORMCOMPONENT_ID = "complexFormComponentPageLink";
     private static final String UPLOAD_ID = "uploadPageLink";
+    private static final String LIST_ID = "listPageLink";
 
     public HomePage()
     {
@@ -123,6 +124,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(UploadPage.class);
+            }
+        });
+        add(new Link<Void>(LIST_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(ListPage.class);
             }
         });
     }
