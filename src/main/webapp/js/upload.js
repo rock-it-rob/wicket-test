@@ -1,10 +1,10 @@
 // Creates a dropzone on the given element and places its hidden input on the containerElement.
-function createDropzone(element, containerElement, url, maxFiles) {
+function createDropzone(element, containerElement, url, maxFiles, multiple) {
 
     try {
         new Dropzone(element, {
             previewTemplate: $(containerElement).find('.preview-template').parent()[0].innerHTML,
-            uploadMultiple: true,
+            uploadMultiple: multiple,
             maxFiles: maxFiles,
             parallelUploads: maxFiles,
             // Set the hidden element on the container of the dropzone.
@@ -22,6 +22,11 @@ function createDropzone(element, containerElement, url, maxFiles) {
             autoProcessQueue: false,
             init: function () {
 
+                this.on('sending', function (file) {
+                    //
+                    // Do clickblocker stuff here.
+                    //
+                });
                 this.on('sendingmultiple', function (files) {
                     //
                     // Do clickblocker stuff here.
@@ -29,14 +34,28 @@ function createDropzone(element, containerElement, url, maxFiles) {
                 });
 
                 // On success process the wicket response.
+                this.on('success', function (file, response) {
+                    console.log('success');
+                    this.removeFile(file);
+                    Wicket.Ajax.process(response);
+                });
                 this.on("successmultiple", function (file, response) {
                     console.log("success multiple");
+                    this.removeAllFiles();
                     Wicket.Ajax.process(response);
                 });
 
                 // On error process the wicket response if the error came from the server.
                 // Dropzone will set the request object in this case. If there is no server 
                 // error then just console the error and let dropzone display it on its preview.
+                this.on('error', function (file, msg, xhr) {
+                    if (xhr != null) {
+                        Wicket.Ajax.process(msg);
+                    }
+                    else {
+                        console.error(msg);
+                    }
+                });
                 this.on("errormultiple", function (file, msg, xhr) {
                     if (xhr != null) {
                         Wicket.Ajax.process(msg);
@@ -48,7 +67,7 @@ function createDropzone(element, containerElement, url, maxFiles) {
 
                 // Once the upload process is finished, remove any files.
                 this.on("queuecomplete", function () {
-                    this.removeAllFiles();
+                    //this.removeAllFiles();
                     console.log("queue complete");
 
                     //

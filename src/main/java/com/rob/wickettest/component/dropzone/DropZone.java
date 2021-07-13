@@ -79,7 +79,7 @@ public class DropZone extends Panel
 
                 // Create the javascript to create a dropzone.
                 final String js = String.format(
-                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', %d);",
+                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', %d, false);",
                         dzDiv.getMarkupId(),
                         getMarkupId(),
                         uploadBehavior.getCallbackUrl(),
@@ -167,7 +167,7 @@ public class DropZone extends Panel
                     final HttpServletResponse response = (HttpServletResponse) getResponse().getContainerResponse();
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 }
-                target.add(container);
+                //target.add(container);
             }
         };
         add(uploadBehavior);
