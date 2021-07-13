@@ -3,6 +3,7 @@ function createDropzone(element, containerElement, url, maxFiles) {
 
     try {
         new Dropzone(element, {
+            previewTemplate: $(containerElement).find('.preview-template').parent()[0].innerHTML,
             uploadMultiple: true,
             maxFiles: maxFiles,
             parallelUploads: maxFiles,
@@ -29,6 +30,7 @@ function createDropzone(element, containerElement, url, maxFiles) {
 
                 // On success process the wicket response.
                 this.on("successmultiple", function (file, response) {
+                    console.log("success multiple");
                     Wicket.Ajax.process(response);
                 });
 
@@ -47,6 +49,7 @@ function createDropzone(element, containerElement, url, maxFiles) {
                 // Once the upload process is finished, remove any files.
                 this.on("queuecomplete", function () {
                     this.removeAllFiles();
+                    console.log("queue complete");
 
                     //
                     // Hide clickblocker here

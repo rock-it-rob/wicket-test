@@ -1,0 +1,14 @@
+.preview {
+  margin: 0 1em 2em 0;
+  background: #FFFFFF;
+  padding: 0.5em;
+  border: 2px solid #959595;
+  display: block; }
+
+.remove {
+    min-width: 40px;
+    min-height: 40px;
+    background: #d00;
+    display: block;
+    border: 1px solid #a00;
+}

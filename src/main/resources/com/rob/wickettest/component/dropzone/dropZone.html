@@ -1,10 +1,28 @@
 <wicket:panel xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 
     <div wicket:id="container">
+
         <div wicket:id="dzDiv" class="dz-item"></div>
+
+        <!-- Preview template -->
+        <div style="display: none;">
+            <div class="preview-template">
+            <span class="preview">
+                <img data-dz-thumbnail/>
+            </span>
+                <div>
+                    <span data-dz-name></span>
+                </div>
+                <div>
+                    <strong class="error" data-dz-errormessage></strong>
+                </div>
+                <span class="remove" data-dz-remove>X</span>
+            </div>
+        </div>
+
     </div>
 
-    <input type='text' wicket:id='sampleTextInput' placeholder='Not Empty' />
+    <input type='text' wicket:id='sampleTextInput' placeholder='Not Empty'/>
     <button wicket:id='uploadButton' class='upload-button'>Upload Files</button>
 
     <div wicket:id="uploadMsg"></div>

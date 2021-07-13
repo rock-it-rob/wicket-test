@@ -3,11 +3,8 @@ package com.rob.wickettest.component.dropzone;
 import com.rob.wickettest.page.AbstractPage;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.attributes.AjaxCallListener;
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -184,5 +181,7 @@ public class DropZone extends Panel
             if (fi.getSize() == 0) throw new FileUploadException("Don't send me an empty file!");
         }
         log.info("Processed all files successfully");
+        success("All files uploaded");
+        target.add(((AbstractPage) getPage()).getFeedbackPanel());
     }
 }
