@@ -1,21 +1,18 @@
-<!doctype html>
+<wicket:extend xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+    <wicket:head>
+        <script src="js/tiny_mce/tiny_mce.js"></script>
+    </wicket:head>
 
-<wicket:extend>
+    <div wicket:id='mceText'></div>
 
-    <textarea wicket:id="textarea"></textarea>
-    <label wicket:id="label"></label>
+    <div>
+        <span wicket:id='enteredText'></span>
+    </div>
 
-    <script>
-        $(document).ready(function() {
-            tinymce.init({
-                mode: 'textareas'
-            })
-        });
-    </script>
+    <div>
+        <a wicket:id='toggle'>Toggle</a>
+    </div>
 
 </wicket:extend>
-
-</html>

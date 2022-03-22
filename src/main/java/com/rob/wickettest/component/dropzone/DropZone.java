@@ -1,14 +1,21 @@
 package com.rob.wickettest.component.dropzone;
 
+import com.rob.wickettest.page.AbstractPage;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.protocol.http.servlet.MultipartServletWebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.resource.ContextRelativeResourceReference;
@@ -17,8 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DropZone extends Panel
 {
@@ -31,6 +39,11 @@ public class DropZone extends Panel
     private boolean dzVisible = true;
     private WebMarkupContainer dzDiv;
     private AbstractDefaultAjaxBehavior uploadBehavior;
+    private Label uploadMsgLabel;
+    private String uploadMsg;
+
+    @NotNull
+    private String sampleText;
 
     public DropZone(String id)
     {
@@ -43,7 +56,7 @@ public class DropZone extends Panel
         super.onInitialize();
 
         //
-        // Container holding the form.
+        // Container holding the dropzone.
         //
         final WebMarkupContainer container = new WebMarkupContainer("container")
         {
@@ -64,9 +77,9 @@ public class DropZone extends Panel
                 final JavaScriptReferenceHeaderItem referenceHeaderItem = JavaScriptReferenceHeaderItem.forReference(resourceReference);
                 response.render(referenceHeaderItem);
 
-                // Create the javascript to create a dropzone on this form. Use a null on the header item identifier because we want this to run on each render.
+                // Create the javascript to create a dropzone.
                 final String js = String.format(
-                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', %d);",
+                        "createDropzone(document.getElementById('%s'), document.getElementById('%s'), '%s', %d, false);",
                         dzDiv.getMarkupId(),
                         getMarkupId(),
                         uploadBehavior.getCallbackUrl(),
@@ -81,49 +94,45 @@ public class DropZone extends Panel
         add(container);
 
         //
-        // Form that is the dropzone
+        // Container that is the dropzone
         //
 
         dzDiv = new WebMarkupContainer("dzDiv");
         container.add(dzDiv);
 
-        /*
         //
-        // Links for testing
+        // Label for testing.
         //
 
-        final AjaxLink<Void> refreshLink = new AjaxLink<Void>("refresh")
-        {
-            @Override
-            public void onClick(AjaxRequestTarget target)
-            {
-                target.add(container);
-            }
-        };
-        add(refreshLink);
+        uploadMsgLabel = new Label("uploadMsg", new PropertyModel<>(this, "uploadMsg"));
+        uploadMsgLabel.setOutputMarkupId(true);
+        add(uploadMsgLabel);
 
-        final AjaxLink<Void> toggleLink = new AjaxLink<Void>("toggleForm")
-        {
-            @Override
-            public void onClick(AjaxRequestTarget target)
-            {
-                dzVisible = !dzVisible;
-                target.add(container);
-            }
-        };
-        add(toggleLink);
+        //
+        // Simple text entry widget for validation
+        //
+        final TextField<String> sampleTextInput = new TextField<>("sampleTextInput", new PropertyModel<>(this, "sampleText"));
+        sampleTextInput.add(new PropertyValidator<>());
+        add(sampleTextInput);
 
-        final AjaxLink<Void> noopLink = new AjaxLink<Void>("noop")
+        //
+        // Button that will submit the form and then trigger the upload.
+        //
+        final AjaxButton uploadButton = new AjaxButton("uploadButton")
         {
             @Override
-            public void onClick(AjaxRequestTarget target)
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form)
             {
-                // nothing
-                //target.add(this);
+                target.appendJavaScript(String.format("processDropzoneQueue('%s');", dzDiv.getMarkupId()));
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form)
+            {
+                target.add(((AbstractPage) getPage()).getFeedbackPanel());
             }
         };
-        add(noopLink);
-        */
+        add(uploadButton);
 
         //
         // Behaviors
@@ -136,64 +145,43 @@ public class DropZone extends Panel
             {
                 log.info("Received request");
 
-                onUpload(target);
-                target.add(container);
+                final ServletWebRequest servletWebRequest = (ServletWebRequest) getRequest();
+
+                try
+                {
+                    final MultipartServletWebRequest multipartServletWebRequest = servletWebRequest.newMultipartWebRequest(Bytes.megabytes(MAX_MB), "unused");
+                    multipartServletWebRequest.parseFileParts();
+                    final List<FileItem> files = multipartServletWebRequest.getFiles().values().stream()
+                            .map(l -> l.get(0))
+                            .collect(Collectors.toList());
+
+                    onUpload(target, files);
+                }
+                catch (FileUploadException e)
+                {
+                    final String msg = e.getMessage() == null ? "Upload failed" : e.getMessage();
+                    log.error(msg);
+                    error(msg);
+                    AbstractPage page = (AbstractPage) getPage();
+                    target.add(page.getFeedbackPanel());
+                    final HttpServletResponse response = (HttpServletResponse) getResponse().getContainerResponse();
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                //target.add(container);
             }
         };
         add(uploadBehavior);
     }
 
-    private void onUpload(AjaxRequestTarget target)
+    private void onUpload(AjaxRequestTarget target, List<FileItem> files) throws FileUploadException
     {
-        final ServletWebRequest servletWebRequest = (ServletWebRequest) getRequest();
-        try
+        for (FileItem fi : files)
         {
-            final MultipartServletWebRequest multipartServletWebRequest = servletWebRequest.newMultipartWebRequest(Bytes.megabytes(MAX_MB), "unused");
-            multipartServletWebRequest.parseFileParts();
-            for (Map.Entry<String, List<FileItem>> me : multipartServletWebRequest.getFiles().entrySet())
-            {
-                log.info("Files in: " + me.getKey());
-
-                for (FileItem fi : me.getValue())
-                {
-                    processFile(fi);
-                }
-            }
-            done();
+            log.info(fi.getName());
+            if (fi.getSize() == 0) throw new FileUploadException("Don't send me an empty file!");
         }
-        catch (FileUploadException e)
-        {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        catch (Exception e)
-        {
-            final HttpServletResponse httpServletResponse = (HttpServletResponse) getResponse().getContainerResponse();
-            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            /*
-            try
-            {
-                httpServletResponse.setContentType("text/plain");
-                httpServletResponse.getWriter().print(e.getMessage());
-                httpServletResponse.getWriter().close();
-            }
-            catch (IOException iox)
-            {
-                throw new RuntimeException(iox);
-            }
-             */
-        }
-    }
-
-    private void processFile(FileItem fileItem) throws Exception
-    {
-        log.info(fileItem.getName());
-
-        if (1 == 1) throw new Exception("no uploads for you");
-    }
-
-    private void done()
-    {
         log.info("Processed all files successfully");
+        success("All files uploaded");
+        target.add(((AbstractPage) getPage()).getFeedbackPanel());
     }
 }

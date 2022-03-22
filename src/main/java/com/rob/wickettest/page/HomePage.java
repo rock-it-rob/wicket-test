@@ -22,6 +22,7 @@ public class HomePage extends AbstractPage
     private static final String DATERANGE_ID = "dateRangePageLink";
     private static final String COMPLEX_FORMCOMPONENT_ID = "complexFormComponentPageLink";
     private static final String UPLOAD_ID = "uploadPageLink";
+    private static final String LIST_ID = "listPageLink";
     private static final String NESTED_FORM_ID = "nestedFormPageLink";
 
     public HomePage()
@@ -91,7 +92,7 @@ public class HomePage extends AbstractPage
             @Override
             public void onClick()
             {
-                setResponsePage(TinyMCEPage.class);
+                setResponsePage(TinyMcePage.class);
             }
         });
         add(new Link<Void>(RESOURCE_ID)
@@ -124,6 +125,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(UploadPage.class);
+            }
+        });
+        add(new Link<Void>(LIST_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(ListPage.class);
             }
         });
         add(new Link<Void>(NESTED_FORM_ID)

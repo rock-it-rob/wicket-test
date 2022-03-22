@@ -1,0 +1,22 @@
+<wicket:panel xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+      <div wicket:id='editContainer'>
+            <textarea wicket:id='rawText'></textarea>
+
+            <div>
+                  <a wicket:id='saveLink'
+                        style='margin 20px; padding: 8px; background-color: #48d; color: #fff; border: 1px solid #16a; border-radius: 3px;'>Save</a>
+            </div>
+      </div>
+
+      <div wicket:id='viewContainer'>
+            <span wicket:id='readOnlyContent'></span>
+
+            <div>
+                  <a wicket:id='editLink'
+                        style='margin 20px; padding: 8px; background-color: #48d; color: #fff; border: 1px solid #16a; border-radius: 3px;'>Edit</a>
+            </div>
+      </div>
+
+</wicket:panel>
