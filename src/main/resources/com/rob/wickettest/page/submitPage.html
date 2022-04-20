@@ -1,0 +1,18 @@
+<wicket:extend xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:wicket="http://git-wip-us.apache.org/repos/asf/wicket/repo?p=wicket.git;a=blob_plain;f=wicket-core/src/main/resources/META-INF/wicket-1.5.xsd;hb=master">
+
+    <h1>Submit Methods</h1>
+
+    <h2>Using a Submit Button Outside a Form</h2>
+
+    <form wicket:id="noButtonForm">
+        <input type="submit" wicket:id="secretButton" value="Secret Submit" style="display: none;"/>
+        <p>Input</p>
+        <input type="text" wicket:id="noButtonText"/>
+        <div>
+            Output: <span wicket:id="noButtonDisplay"/>
+        </div>
+    </form>
+    <input type="submit" wicket:id="noButtonSubmit"/>
+
+</wicket:extend>

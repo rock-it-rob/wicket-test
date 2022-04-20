@@ -25,6 +25,7 @@ public class HomePage extends AbstractPage
     private static final String LIST_ID = "listPageLink";
     private static final String NESTED_FORM_ID = "nestedFormPageLink";
     private static final String FFEDBACK_ID = "feedbackPageLink";
+    private static final String SUBMIT_ID = "submitPageLink";
 
     public HomePage()
     {
@@ -150,6 +151,14 @@ public class HomePage extends AbstractPage
             public void onClick()
             {
                 setResponsePage(FeedbackPage.class);
+            }
+        });
+        add(new Link<Void>(SUBMIT_ID)
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(SubmitPage.class);
             }
         });
     }
