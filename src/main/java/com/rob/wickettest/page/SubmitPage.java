@@ -1,5 +1,6 @@
 package com.rob.wickettest.page;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -59,9 +60,14 @@ public class SubmitPage extends AbstractPage
             }
         };
 
+        // Using the technique of adding a "form" attribute a secret submit
+        // button is not needed. HOWEVER, if there is any other submit button
+        // on a form, that button will be clicked when a user presses ENTER on
+        // an input element.
+
         // To use an input element outside a form it needs a form attribute
         // with the id of the form.
-        //button.add(new AttributeModifier("form", form.getMarkupId()));
+        button.add(new AttributeModifier("form", form.getMarkupId()));
 
         add(button);
     }
