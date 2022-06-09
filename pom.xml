@@ -15,7 +15,7 @@
         <wicket.version>7.17.0</wicket.version>
         <jetty.version>9.4.14.v20181114</jetty.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <selenium.version>4.2.1</selenium.version>
+        <selenide.version>6.6.0</selenide.version>
         <joda.time.version>2.9</joda.time.version>
         <app.context>/${project.name}</app.context>
         <app.port>8081</app.port>
@@ -78,11 +78,23 @@
             <version>${selenium.version}</version>
             <scope>test</scope>
         </dependency>
-        -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
         <!-- Junit -->

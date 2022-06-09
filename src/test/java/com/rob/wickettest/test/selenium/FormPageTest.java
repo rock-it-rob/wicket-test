@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import static org.openqa.selenium.By.*;
 import static org.junit.Assert.*;
 
+// Ignoring this class I previously wrote for now.
+@Ignore
 @Category(SeleniumCategory.class)
 public class FormPageTest
 {
