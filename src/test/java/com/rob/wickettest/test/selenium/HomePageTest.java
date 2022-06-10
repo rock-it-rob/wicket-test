@@ -1,15 +1,12 @@
 package com.rob.wickettest.test.selenium;
 
-import com.codeborne.selenide.Selenide;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -29,16 +26,6 @@ public class HomePageTest
 
         // Download the correct Chrome driver.
         WebDriverManager.chromedriver().setup();
-
-        // Create the Chrome driver.
-        //webDriver = new ChromeDriver();
-    }
-
-    @AfterClass
-    public static void afterClass()
-    {
-        // Close Chrome.
-        //webDriver.quit();
     }
 
     @Before
